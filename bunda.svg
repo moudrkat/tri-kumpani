@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1170" viewBox="0 0 1600 1170">
+<style>
+  text { font-family: "DejaVu Sans Mono", "JetBrains Mono", monospace; white-space: pre; }
+  .ja    { font-size: 52px; font-weight: bold; fill: #ffffff; }
+  .mesic { font-size: 34px; fill: #d9d9d9; }
+  .stin  { font-size: 24px; fill: #6f6f6f; }
+</style>
+<rect width="100%" height="100%" fill="#0b0b0b"/>
+<text class="ja" x="100" y="140">Jasmínu loubí. Sedím u vína</text>
+<text class="mesic" x="100" y="204">J·asmínu·▁loubí·.·▁S·ed·ím·▁u·▁vína</text>
+<text class="stin" x="100" y="252">4a 61 73 6d c3 ad 6e 75 20 6c 6f 75 62 c3 ad 2e 20 53 65 64 c3 ad 6d 20</text>
+<text class="stin" x="100" y="286">75 20 76 c3 ad 6e 61</text>
+<text class="ja" x="100" y="390">zve dobré druhy dobrá hodina –</text>
+<text class="mesic" x="100" y="454">z·ve·▁dobré·▁d·r·u·h·y·▁dobr·á·▁hodin·a·▁–</text>
+<text class="stin" x="100" y="502">7a 76 65 20 64 6f 62 72 c3 a9 20 64 72 75 68 79 20 64 6f 62 72 c3 a1 20</text>
+<text class="stin" x="100" y="536">68 6f 64 69 6e 61 20 e2 80 93</text>
+<text class="ja" x="100" y="640">a já jsem sám. Vtom náhle nad strání</text>
+<text class="mesic" x="100" y="704">a·▁já·▁jsem·▁sám·.·▁·V·t·o·m·▁ná·hl·e·▁na·d·▁st·r·ání</text>
+<text class="stin" x="100" y="752">61 20 6a c3 a1 20 6a 73 65 6d 20 73 c3 a1 6d 2e 20 56 74 6f 6d 20 6e c3</text>
+<text class="stin" x="100" y="786">a1 68 6c 65 20 6e 61 64 20 73 74 72 c3 a1 6e c3 ad</text>
+<text class="ja" x="100" y="890">kulatý měsíc se mi uklání</text>
+<text class="mesic" x="100" y="954">ku·l·at·ý·▁měsíc·▁se·▁m·i·▁u·kl·ání</text>
+<text class="stin" x="100" y="1002">6b 75 6c 61 74 c3 bd 20 6d c4 9b 73 c3 ad 63 20 73 65 20 6d 69 20 75 6b</text>
+<text class="stin" x="100" y="1036">6c c3 a1 6e c3 ad</text>
+</svg>

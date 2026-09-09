@@ -18,7 +18,8 @@ Po cestě se naučím, co je pod textem: bajty, tokenizery, BPE a word2vec.
 uv sync --extra dev
 uv run python napis.py                  # celý nápis na terminál
 uv run python napis.py --sloka 1        # jen první sloka
-uv run python napis.py --svg napis.svg  # šablona pro tisk
+uv run python napis.py --verse 1-4      # nápis končí „se mi uklání“
+uv run python bunda.py                  # tisková předloha bunda.svg + bunda.png
 uv run pytest
 ```
 
