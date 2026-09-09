@@ -11,6 +11,7 @@ Spuštění:
     uv run python napis.py                 # vypíše na terminál
     uv run python napis.py --svg napis.svg # šablona na tisk / nažehlovačku
     uv run python napis.py --sloka 1       # jen jednu sloku (od 1)
+    uv run python napis.py --verse 1-4     # jen verše 1 až 4, končí „se mi uklání"
 """
 import argparse
 import re
@@ -126,6 +127,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--basen", default="tri_kumpani")
     ap.add_argument("--sloka", type=int, help="jen tahle sloka, od 1")
+    ap.add_argument("--verse", help="jen tyhle verše napříč slokami, např. 1-4")
     ap.add_argument("--spojeni", type=int, default=120, help="kolik BPE pravidel se naučit")
     ap.add_argument("--svg", help="kam zapsat SVG")
     a = ap.parse_args()
@@ -133,6 +135,10 @@ def main() -> None:
     vysledek = napis(basen, a.spojeni)
     if a.sloka:
         vysledek = [vysledek[a.sloka - 1]]
+    if a.verse:
+        od, do = (int(x) for x in a.verse.split("-"))
+        vsechny = [t for sloka in vysledek for t in sloka]
+        vysledek = [vsechny[od - 1:do]]
     if a.svg:
         with open(a.svg, "w", encoding="utf-8") as f:
             f.write(do_svg(vysledek))
