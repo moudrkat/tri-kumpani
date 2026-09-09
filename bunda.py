@@ -1,19 +1,16 @@
 """Tisková předloha na záda: čtyři verše, jednou, ale tak, jak je vidí model.
 
 Každý token ve svém políčku, pod ním jeho číslo ve slovníku. Tokenizer je
-skutečný: o200k_base od OpenAI (GPT-4o a novější), 200 019 tokenů. Appka
-používá tentýž slovník, takže čísla na bundě jsou ta, která jdou do modelu.
+skutečný: Qwen 2.5, 151 665 tokenů. Tenhle model báseň opravdu přečetl
+(model/precompute.py) a appka ukazuje, co se s tokeny dělo uvnitř.
 
     uv sync --extra tisk
     uv run python bunda.py            # zapíše bunda.svg a bunda.png (3200 px na šířku)
 """
 from html import escape
 
-import tiktoken
-
 from lekce import sloky
-
-KODOVANI = "o200k_base"
+from lekce.qwen_tok import decode, encode
 
 VERSE = [v.rstrip(",") for v in sloky("tri_kumpani")[0][:4]]
 BARVY = ["#2f6f9f", "#b0552f", "#3e8a58", "#7b4f9d"]   # čtyři tlumené, střídají se
@@ -31,14 +28,13 @@ def sirka_tokenu(t: str) -> float:
 
 
 def main() -> None:
-    enc = tiktoken.get_encoding(KODOVANI)
     prvky = []
     y = OKRAJ
     for vers in VERSE:
         x = OKRAJ
         barva = 0
-        for tid in enc.encode(vers):
-            txt = enc.decode([tid]).replace(" ", "▁")
+        for tid in encode(vers):
+            txt = decode([tid]).replace(" ", "▁")
             w = max(sirka_tokenu(txt), len(str(tid)) * VEL_CISLO * SIRKA_ZNAKU + 2 * PAD_X)
             if x + w > SIRKA - OKRAJ:
                 x = OKRAJ

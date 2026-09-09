@@ -1,17 +1,14 @@
 """Druhá předloha na záda: čísla velká, slova drobná.
 
 Stěna čísel, která je tajně báseň. Každé číslo je token ve slovníku
-o200k_base, pod ním šedě to, co v něm je. Bez políček, bez barev.
+Qwen 2.5, pod ním šedě to, co v něm je. Bez políček, bez barev.
 
     uv run python bunda_cisla.py      # zapíše bunda_cisla.svg a bunda_cisla.png
 """
 from html import escape
 
-import tiktoken
-
 from lekce import sloky
-
-KODOVANI = "o200k_base"
+from lekce.qwen_tok import decode, encode
 VERSE = [v.rstrip(",") for v in sloky("tri_kumpani")[0][:4]]
 POZADI, CISLO, SLOVO = "#0b0b0b", "#ffffff", "#6a6762"
 SIRKA, OKRAJ = 1800, 80
@@ -22,13 +19,12 @@ MEZERA, VYSKA_RADKU, MEZERA_VERSE = 28, 80, 50
 
 
 def main() -> None:
-    enc = tiktoken.get_encoding(KODOVANI)
     prvky = []
     y = OKRAJ + 50
     for vers in VERSE:
         x = OKRAJ
-        for tid in enc.encode(vers):
-            slovo = enc.decode([tid]).replace(" ", "▁")
+        for tid in encode(vers):
+            slovo = decode([tid]).replace(" ", "▁")
             w = max(len(str(tid)) * VEL_CISLO, len(slovo) * VEL_SLOVO) * SIRKA_ZNAKU
             if x + w > SIRKA - OKRAJ:
                 x = OKRAJ

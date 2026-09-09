@@ -8,8 +8,17 @@ dependencies = ["numpy>=2.0"]
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 srovnani = ["tiktoken>=0.8", "tokenizers>=0.20"]
-tisk = ["cairosvg>=2.7", "tiktoken>=0.8"]
+tisk = ["cairosvg>=2.7", "tokenizers>=0.20"]
+model = ["torch>=2.4", "transformers>=4.45", "tokenizers>=0.20"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
