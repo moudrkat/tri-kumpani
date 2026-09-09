@@ -20,7 +20,8 @@ if not isinstance(merges[0], str):
     merges = [" ".join(m) for m in merges]
 
 html = (TADY / "template.html").read_text(encoding="utf-8")
-html = html.replace("__QWEN__", QWEN.read_text(encoding="utf-8"))
+# části vícebajtových znaků dekódují na U+FFFD; do JS jde jako escape, aby ho hosting nezahodil
+html = html.replace("__QWEN__", QWEN.read_text(encoding="utf-8").replace("\ufffd", "\\ufffd"))
 html = html.replace("__MERGES__", json.dumps("\n".join(merges), ensure_ascii=False))
 (TADY / "index.html").write_text(html, encoding="utf-8")
 print("zapsáno app/index.html", (TADY / "index.html").stat().st_size // 1024, "kB")

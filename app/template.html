@@ -524,9 +524,8 @@ window.MERGES = __MERGES__;
     poem.appendChild(row);
   });
 
-  /* start: vybraný je „měs", ten nejhezčí token na bundě */
-  var start = T.findIndex(function (t) { return t.s === " měs"; });
-  select(start >= 0 ? start : 0);
+  /* start: poslední token na bundě, ten už má za sebou celou báseň */
+  select(N - 1);
   update();
 })();
 </script>
