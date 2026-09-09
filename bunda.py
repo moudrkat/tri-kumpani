@@ -1,46 +1,63 @@
-"""Tisková předloha na záda: první čtyři verše, tři kumpáni, černé pozadí.
+"""Tisková předloha na záda: čtyři verše, jednou, ale tak, jak je vidí model.
+
+Každý token ve svém políčku, pod ním jeho číslo ve slovníku. Tokenizer je
+skutečný: o200k_base od OpenAI (GPT-4o a novější), 200 019 tokenů. Appka
+používá tentýž slovník, takže čísla na bundě jsou ta, která jdou do modelu.
 
     uv sync --extra tisk
     uv run python bunda.py            # zapíše bunda.svg a bunda.png (3200 px na šířku)
 """
 from html import escape
 
+import tiktoken
+
 from lekce import sloky
-from napis import KumpanBPE
+
+KODOVANI = "o200k_base"
 
 VERSE = [v.rstrip(",") for v in sloky("tri_kumpani")[0][:4]]
-SIRKA, OKRAJ = 1600, 100          # px, poměr zhruba 40 cm zad
+BARVY = ["#2f6f9f", "#b0552f", "#3e8a58", "#7b4f9d"]   # čtyři tlumené, střídají se
+POZADI, PISMO, CISLO = "#0b0b0b", "#ffffff", "#e6e6e6"
+
+SIRKA, OKRAJ = 1620, 80
 FONT = '"DejaVu Sans Mono", "JetBrains Mono", monospace'
+VEL_TOKEN, VEL_CISLO = 40, 18
+SIRKA_ZNAKU = 0.602          # poměr šířky znaku k velikosti písma u DejaVu Sans Mono
+PAD_X, MEZERA, VYSKA_BOXU, MEZERA_RADKU, MEZERA_VERSE = 12, 8, 92, 14, 56
 
 
-def hex_radky(vers: str, na_radek: int = 24) -> list[str]:
-    b = vers.encode("utf-8")
-    return [" ".join(f"{x:02x}" for x in b[i:i + na_radek]) for i in range(0, len(b), na_radek)]
+def sirka_tokenu(t: str) -> float:
+    return len(t) * VEL_TOKEN * SIRKA_ZNAKU + 2 * PAD_X
 
 
 def main() -> None:
-    bpe = KumpanBPE("\n".join("\n".join(s) for s in sloky("tri_kumpani")), 120)
-    y = OKRAJ + 40
+    enc = tiktoken.get_encoding(KODOVANI)
     prvky = []
+    y = OKRAJ
     for vers in VERSE:
-        prvky.append(f'<text class="ja" x="{OKRAJ}" y="{y}">{escape(vers)}</text>')
-        y += 64
-        mesic = "·".join(t.replace(" ", "▁") for t in bpe.tokeny(vers))
-        prvky.append(f'<text class="mesic" x="{OKRAJ}" y="{y}">{escape(mesic)}</text>')
-        y += 48
-        for r in hex_radky(vers):
-            prvky.append(f'<text class="stin" x="{OKRAJ}" y="{y}">{r}</text>')
-            y += 34
-        y += 70
-    vyska = y + OKRAJ - 70
+        x = OKRAJ
+        barva = 0
+        for tid in enc.encode(vers):
+            txt = enc.decode([tid]).replace(" ", "▁")
+            w = max(sirka_tokenu(txt), len(str(tid)) * VEL_CISLO * SIRKA_ZNAKU + 2 * PAD_X)
+            if x + w > SIRKA - OKRAJ:
+                x = OKRAJ
+                y += VYSKA_BOXU + MEZERA_RADKU
+            b = BARVY[barva % len(BARVY)]
+            barva += 1
+            prvky.append(f'<rect x="{x:.0f}" y="{y}" width="{w:.0f}" height="{VYSKA_BOXU}" rx="10" fill="{b}"/>')
+            prvky.append(f'<text class="tok" x="{x + w / 2:.0f}" y="{y + 50}">{escape(txt)}</text>')
+            prvky.append(f'<text class="id" x="{x + w / 2:.0f}" y="{y + 78}">{tid}</text>')
+            x += w + MEZERA
+        y += VYSKA_BOXU + MEZERA_VERSE
+    vyska = y - MEZERA_VERSE + OKRAJ
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{SIRKA}" height="{vyska}" viewBox="0 0 {SIRKA} {vyska}">
 <style>
-  text {{ font-family: {FONT}; white-space: pre; }}
-  .ja    {{ font-size: 52px; font-weight: bold; fill: #ffffff; }}
-  .mesic {{ font-size: 34px; fill: #d9d9d9; }}
-  .stin  {{ font-size: 24px; fill: #6f6f6f; }}
+  text {{ font-family: {FONT}; text-anchor: middle; white-space: pre; }}
+  .tok {{ font-size: {VEL_TOKEN}px; font-weight: bold; fill: {PISMO}; }}
+  .id  {{ font-size: {VEL_CISLO}px; fill: {CISLO}; }}
 </style>
-<rect width="100%" height="100%" fill="#0b0b0b"/>
+<rect width="100%" height="100%" fill="{POZADI}"/>
 {chr(10).join(prvky)}
 </svg>
 """

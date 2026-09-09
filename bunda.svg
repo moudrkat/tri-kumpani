@@ -1,25 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1170" viewBox="0 0 1600 1170">
+<svg xmlns="http://www.w3.org/2000/svg" width="1620" height="696" viewBox="0 0 1620 696">
 <style>
-  text { font-family: "DejaVu Sans Mono", "JetBrains Mono", monospace; white-space: pre; }
-  .ja    { font-size: 52px; font-weight: bold; fill: #ffffff; }
-  .mesic { font-size: 34px; fill: #d9d9d9; }
-  .stin  { font-size: 24px; fill: #6f6f6f; }
+  text { font-family: "DejaVu Sans Mono", "JetBrains Mono", monospace; text-anchor: middle; white-space: pre; }
+  .tok { font-size: 40px; font-weight: bold; fill: #ffffff; }
+  .id  { font-size: 18px; fill: #e6e6e6; }
 </style>
 <rect width="100%" height="100%" fill="#0b0b0b"/>
-<text class="ja" x="100" y="140">Jasmínu loubí. Sedím u vína</text>
-<text class="mesic" x="100" y="204">J·asmínu·▁loubí·.·▁S·ed·ím·▁u·▁vína</text>
-<text class="stin" x="100" y="252">4a 61 73 6d c3 ad 6e 75 20 6c 6f 75 62 c3 ad 2e 20 53 65 64 c3 ad 6d 20</text>
-<text class="stin" x="100" y="286">75 20 76 c3 ad 6e 61</text>
-<text class="ja" x="100" y="390">zve dobré druhy dobrá hodina –</text>
-<text class="mesic" x="100" y="454">z·ve·▁dobré·▁d·r·u·h·y·▁dobr·á·▁hodin·a·▁–</text>
-<text class="stin" x="100" y="502">7a 76 65 20 64 6f 62 72 c3 a9 20 64 72 75 68 79 20 64 6f 62 72 c3 a1 20</text>
-<text class="stin" x="100" y="536">68 6f 64 69 6e 61 20 e2 80 93</text>
-<text class="ja" x="100" y="640">a já jsem sám. Vtom náhle nad strání</text>
-<text class="mesic" x="100" y="704">a·▁já·▁jsem·▁sám·.·▁·V·t·o·m·▁ná·hl·e·▁na·d·▁st·r·ání</text>
-<text class="stin" x="100" y="752">61 20 6a c3 a1 20 6a 73 65 6d 20 73 c3 a1 6d 2e 20 56 74 6f 6d 20 6e c3</text>
-<text class="stin" x="100" y="786">a1 68 6c 65 20 6e 61 64 20 73 74 72 c3 a1 6e c3 ad</text>
-<text class="ja" x="100" y="890">kulatý měsíc se mi uklání</text>
-<text class="mesic" x="100" y="954">ku·l·at·ý·▁měsíc·▁se·▁m·i·▁u·kl·ání</text>
-<text class="stin" x="100" y="1002">6b 75 6c 61 74 c3 bd 20 6d c4 9b 73 c3 ad 63 20 73 65 20 6d 69 20 75 6b</text>
-<text class="stin" x="100" y="1036">6c c3 a1 6e c3 ad</text>
+<rect x="80" y="80" width="48" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="104" y="130">J</text>
+<text class="id" x="104" y="158">41</text>
+<rect x="136" y="80" width="96" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="184" y="130">asm</text>
+<text class="id" x="184" y="158">16744</text>
+<rect x="240" y="80" width="96" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="288" y="130">ínu</text>
+<text class="id" x="288" y="158">190303</text>
+<rect x="345" y="80" width="72" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="381" y="130">▁l</text>
+<text class="id" x="381" y="158">305</text>
+<rect x="425" y="80" width="96" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="473" y="130">oub</text>
+<text class="id" x="473" y="158">7796</text>
+<rect x="529" y="80" width="57" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="557" y="130">í</text>
+<text class="id" x="557" y="158">556</text>
+<rect x="593" y="80" width="48" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="618" y="130">.</text>
+<text class="id" x="618" y="158">13</text>
+<rect x="650" y="80" width="120" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="710" y="130">▁Sed</text>
+<text class="id" x="710" y="158">33794</text>
+<rect x="778" y="80" width="78" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="817" y="130">ím</text>
+<text class="id" x="817" y="158">11603</text>
+<rect x="864" y="80" width="72" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="900" y="130">▁u</text>
+<text class="id" x="900" y="158">337</text>
+<rect x="944" y="80" width="96" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="992" y="130">▁ví</text>
+<text class="id" x="992" y="158">14663</text>
+<rect x="1048" y="80" width="72" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="1085" y="130">na</text>
+<text class="id" x="1085" y="158">1503</text>
+<rect x="80" y="228" width="48" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="104" y="278">z</text>
+<text class="id" x="104" y="306">89</text>
+<rect x="136" y="228" width="72" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="172" y="278">ve</text>
+<text class="id" x="172" y="306">737</text>
+<rect x="216" y="228" width="144" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="288" y="278">▁dobr</text>
+<text class="id" x="288" y="306">54560</text>
+<rect x="369" y="228" width="57" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="397" y="278">é</text>
+<text class="id" x="397" y="306">377</text>
+<rect x="433" y="228" width="144" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="505" y="278">▁druh</text>
+<text class="id" x="505" y="306">74083</text>
+<rect x="586" y="228" width="48" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="610" y="278">y</text>
+<text class="id" x="610" y="306">88</text>
+<rect x="642" y="228" width="144" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="714" y="278">▁dobr</text>
+<text class="id" x="714" y="306">54560</text>
+<rect x="794" y="228" width="57" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="822" y="278">á</text>
+<text class="id" x="822" y="306">449</text>
+<rect x="859" y="228" width="120" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="919" y="278">▁hod</text>
+<text class="id" x="919" y="306">34332</text>
+<rect x="987" y="228" width="96" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="1035" y="278">ina</text>
+<text class="id" x="1035" y="306">1522</text>
+<rect x="1091" y="228" width="72" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="1127" y="278">▁–</text>
+<text class="id" x="1127" y="306">1127</text>
+<rect x="80" y="376" width="48" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="104" y="426">a</text>
+<text class="id" x="104" y="454">64</text>
+<rect x="136" y="376" width="96" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="184" y="426">▁já</text>
+<text class="id" x="184" y="454">10403</text>
+<rect x="240" y="376" width="144" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="313" y="426">▁jsem</text>
+<text class="id" x="313" y="454">41782</text>
+<rect x="393" y="376" width="72" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="429" y="426">▁s</text>
+<text class="id" x="429" y="454">265</text>
+<rect x="473" y="376" width="78" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="512" y="426">ám</text>
+<text class="id" x="512" y="454">11182</text>
+<rect x="559" y="376" width="48" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="583" y="426">.</text>
+<text class="id" x="583" y="454">13</text>
+<rect x="615" y="376" width="72" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="651" y="426">▁V</text>
+<text class="id" x="651" y="454">631</text>
+<rect x="695" y="376" width="96" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="743" y="426">tom</text>
+<text class="id" x="743" y="454">37521</text>
+<rect x="800" y="376" width="96" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="848" y="426">▁ná</text>
+<text class="id" x="848" y="454">16313</text>
+<rect x="904" y="376" width="96" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="952" y="426">hle</text>
+<text class="id" x="952" y="454">38693</text>
+<rect x="1008" y="376" width="120" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="1068" y="426">▁nad</text>
+<text class="id" x="1068" y="454">13168</text>
+<rect x="1136" y="376" width="120" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="1196" y="426">▁str</text>
+<text class="id" x="1196" y="454">989</text>
+<rect x="1265" y="376" width="96" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="1313" y="426">ání</text>
+<text class="id" x="1313" y="454">23087</text>
+<rect x="80" y="524" width="96" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="128" y="574">kul</text>
+<text class="id" x="128" y="602">43109</text>
+<rect x="184" y="524" width="72" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="220" y="574">at</text>
+<text class="id" x="220" y="602">266</text>
+<rect x="264" y="524" width="67" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="298" y="574">ý</text>
+<text class="id" x="298" y="602">1840</text>
+<rect x="340" y="524" width="120" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="400" y="574">▁měs</text>
+<text class="id" x="400" y="602">198221</text>
+<rect x="468" y="524" width="78" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="507" y="574">íc</text>
+<text class="id" x="507" y="602">23445</text>
+<rect x="554" y="524" width="96" height="92" rx="10" fill="#b0552f"/>
+<text class="tok" x="602" y="574">▁se</text>
+<text class="id" x="602" y="602">458</text>
+<rect x="658" y="524" width="96" height="92" rx="10" fill="#3e8a58"/>
+<text class="tok" x="707" y="574">▁mi</text>
+<text class="id" x="707" y="602">3997</text>
+<rect x="763" y="524" width="120" height="92" rx="10" fill="#7b4f9d"/>
+<text class="tok" x="823" y="574">▁ukl</text>
+<text class="id" x="823" y="602">119300</text>
+<rect x="891" y="524" width="96" height="92" rx="10" fill="#2f6f9f"/>
+<text class="tok" x="939" y="574">ání</text>
+<text class="id" x="939" y="602">23087</text>
 </svg>

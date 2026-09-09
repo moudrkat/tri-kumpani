@@ -1,0 +1,327 @@
+<title>Tři kumpáni</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #0b0b0b;
+    --panel: #161513;
+    --line: #2a2825;
+    --ink: #f2efe9;
+    --muted: #8f8b84;
+    --dim: #5c5954;
+    --t0: #2f6f9f;
+    --t1: #b0552f;
+    --t2: #3e8a58;
+    --t3: #7b4f9d;
+    --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+    --serif: "Cormorant Garamond", "Georgia", serif;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+  }
+  html { color-scheme: dark; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 1;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .lede {
+    color: var(--muted);
+    max-width: 58ch;
+    margin: 0 0 44px;
+  }
+  .lede b { color: var(--ink); font-weight: 500; }
+
+  section { margin: 0 0 48px; }
+  h2 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0 0 6px;
+  }
+  .hint { color: var(--muted); margin: 0 0 16px; max-width: 60ch; }
+
+  .rows { display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tok {
+    font-family: var(--mono);
+    border: 0;
+    border-radius: 7px;
+    padding: 7px 9px 5px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    cursor: pointer;
+    line-height: 1.15;
+    text-align: center;
+    min-width: 28px;
+    outline-offset: 2px;
+    transition: transform 120ms ease;
+  }
+  .tok:hover { transform: translateY(-1px); }
+  .tok:focus-visible { outline: 2px solid var(--ink); }
+  .tok.on { box-shadow: 0 0 0 2px var(--ink); }
+  .tok .s { font-weight: 700; font-size: 15px; white-space: pre; }
+  .tok .n { font-size: 10px; opacity: 0.85; font-variant-numeric: tabular-nums; }
+  .tok.c0 { background: var(--t0); }
+  .tok.c1 { background: var(--t1); }
+  .tok.c2 { background: var(--t2); }
+  .tok.c3 { background: var(--t3); }
+  .tok.nl { background: var(--panel); color: var(--muted); }
+  .tok.bad { outline: 1px dashed var(--muted); }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.35;
+    resize: vertical;
+    min-height: 92px;
+  }
+  textarea:focus { outline: 2px solid var(--t0); outline-offset: 1px; border-color: transparent; }
+  .stats {
+    display: flex;
+    gap: 22px;
+    margin: 12px 0 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .stats b { color: var(--ink); font-weight: 700; font-size: 15px; margin-right: 5px; }
+
+  .detail {
+    margin-top: 22px;
+    background: var(--panel);
+    border-left: 3px solid var(--t0);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 6px 16px;
+    font-size: 14px;
+  }
+  .detail[hidden] { display: none; }
+  .detail dt { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 3px; }
+  .detail dd { margin: 0; }
+  .detail .big { font-family: var(--mono); font-size: 22px; font-weight: 700; white-space: pre; }
+  .detail .hex { font-family: var(--mono); color: var(--ink); word-break: break-all; }
+  .detail .verse { font-family: var(--serif); font-style: italic; font-size: 18px; }
+  .detail .verse span { color: var(--muted); font-family: var(--mono); font-style: normal; font-size: 11px; margin-right: 8px; }
+
+  details summary {
+    cursor: pointer;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+    list-style: none;
+  }
+  details summary::before { content: "▸ "; color: var(--muted); font-family: var(--mono); font-size: 14px; }
+  details[open] summary::before { content: "▾ "; }
+  details .rows { margin-top: 18px; }
+  .stanza-gap { height: 14px; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    color: var(--dim);
+    font-size: 13px;
+    max-width: 62ch;
+  }
+  footer p { margin: 0 0 8px; }
+  .err { color: var(--t1); font-family: var(--mono); font-size: 13px; }
+  @media (max-width: 520px) {
+    h1 { font-size: 48px; }
+    .detail { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tok { transition: none; } }
+</style>
+
+<main>
+  <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · slovník o200k_base</p>
+  <h1>Tři kumpáni</h1>
+  <p class="lede">Na zádech bundy jsou čtyři verše tak, jak je vidí jazykový model. Každé políčko je jeden <b>token</b>, číslo pod ním je jeho místo ve slovníku, ze kterého čte GPT. Slovník má 200&thinsp;019 kusů a Li Po v něm nikdy nebyl, přesto se do něj vejde.</p>
+
+  <section>
+    <h2>Co je na bundě</h2>
+    <p class="hint">Ťukni na políčko a dozvíš se, co v něm je.</p>
+    <div class="rows" id="jacket"></div>
+  </section>
+
+  <section>
+    <h2>Napiš něco a bunda to přečte</h2>
+    <p class="hint">Stejný tokenizer rozseká cokoli. Zjistíš, kolik z tvé věty už Li Po řekl.</p>
+    <textarea id="input" spellcheck="false" aria-label="Text k rozsekání">Dneska prší a já jsem sám.</textarea>
+    <div class="stats" id="stats"></div>
+    <div class="row" id="yours"></div>
+    <dl class="detail" id="detail" hidden></dl>
+  </section>
+
+  <section>
+    <details>
+      <summary>Celá báseň v tokenech</summary>
+      <div class="rows" id="poem"></div>
+    </details>
+  </section>
+
+  <footer>
+    <p>Tokenizer je o200k_base od OpenAI, slovník modelů od GPT-4o dál. Běží tady v prohlížeči, nic se nikam neposílá.</p>
+    <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
+    <p id="err" class="err" hidden></p>
+  </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gpt-tokenizer@3.4.0/dist/o200k_base.js"></script>
+<script>
+(function () {
+  var POEM = "Jasmínu loubí. Sedím u vína,\nzve dobré druhy dobrá hodina –\na já jsem sám. Vtom náhle nad strání\nkulatý měsíc se mi uklání,\njá jemu. Se mnou v modrých nebes klín\nmůj kývá stín.\nSpolečnost poklonami nešetří –\ntak byl jsem sám, a teď jsme tři.\n\nChce měsíc pít. Jak mám ti podat číš?!\nStín zdvíhá pohár. Copak nevidíš,\nže dneska za vás za oba\npít musí moje hříšná nádoba?\n\nCo je to ale, chlapci rozmilí?\nJá piju – vy jste z toho opilí!\nMěsíc se motá, žvatlá ke stínu,\nten se snítkou zas tančí jasmínu,\njen já tu sedím klidně při víně,\njim připíjím a dobré hodině.\n\nTož loutnu sem a píseň se mnou noťte,\npak na kutě mě, chlapci, doprovoďte,\nvždyť do jedné se vejdou postele\nkumpáni světlé noci veselé.\n\nA zejtra navečer, až první hvězdy vzplanou,\nu vína v loubí, chlapci, nashledanou!";
+  var JACKET = POEM.split("\n").slice(0, 4).map(function (v) { return v.replace(/,$/, ""); });
+
+  var T = window.GPTTokenizer_o200k_base;
+  var err = document.getElementById("err");
+  if (!T) {
+    err.hidden = false;
+    err.textContent = "Tokenizer se nenačetl. Zkus stránku obnovit, potřebuje jednou stáhnout slovník (2 MB).";
+    return;
+  }
+  var enc = new TextEncoder();
+  var lines = POEM.split("\n");
+  var where = {};
+  var verseNo = 0;
+  lines.forEach(function (line) {
+    if (!line) return;
+    verseNo += 1;
+    var n = verseNo;
+    T.encode(line).forEach(function (id) {
+      (where[id] = where[id] || []).push({ n: n, line: line });
+    });
+  });
+
+  function tokenString(id) { return T.decode([id]); }
+
+  function pieces(text) {
+    return T.encode(text).map(function (id) {
+      var s = tokenString(id);
+      return { id: id, s: s, bad: s.indexOf("\uFFFD") >= 0 };
+    });
+  }
+
+  function show(s) {
+    if (s === "\n") return "↵";
+    return s.replace(/ /g, "▁");
+  }
+
+  function renderRow(container, text, onPick) {
+    var row = document.createElement("div");
+    row.className = "row";
+    pieces(text).forEach(function (p, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "tok c" + (i % 4) + (p.s === "\n" ? " nl" : "") + (p.bad ? " bad" : "");
+      b.innerHTML = '<span class="s"></span><span class="n"></span>';
+      b.firstChild.textContent = show(p.s);
+      b.lastChild.textContent = p.id;
+      b.addEventListener("click", function () { onPick(p, b); });
+      row.appendChild(b);
+    });
+    container.appendChild(row);
+    return row;
+  }
+
+  var detail = document.getElementById("detail");
+  var picked = null;
+  function pick(p, btn) {
+    if (picked) picked.classList.remove("on");
+    picked = btn; btn.classList.add("on");
+    var hex = p.bad ? "část vícebajtového znaku, sám o sobě nejde přečíst"
+                    : Array.prototype.map.call(enc.encode(p.s), function (x) { return x.toString(16).padStart(2, "0"); }).join(" ");
+    var occ = where[p.id] || [];
+    var poemHtml;
+    if (!occ.length) {
+      poemHtml = "<dd>Li Po tohle nikdy neřekl.</dd>";
+    } else {
+      var seen = {};
+      poemHtml = occ.filter(function (o) { if (seen[o.n]) return false; seen[o.n] = true; return true; })
+        .slice(0, 4)
+        .map(function (o) { return '<dd class="verse"><span>' + o.n + '</span>' + esc(o.line) + '</dd>'; })
+        .join("");
+      poemHtml = '<dd>' + occ.length + '× v básni</dd>' + poemHtml;
+    }
+    detail.innerHTML =
+      '<dt>token</dt><dd class="big">' + esc(show(p.s)) + '</dd>' +
+      '<dt>číslo</dt><dd class="hex">' + p.id + '</dd>' +
+      '<dt>bajty</dt><dd class="hex">' + esc(hex) + '</dd>' +
+      '<dt>u Li Po</dt>' + poemHtml;
+    detail.hidden = false;
+    detail.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+  function esc(s) { return s.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+
+  var jacket = document.getElementById("jacket");
+  JACKET.forEach(function (v) { renderRow(jacket, v, pick); });
+
+  var poem = document.getElementById("poem");
+  lines.forEach(function (line) {
+    if (!line) { var g = document.createElement("div"); g.className = "stanza-gap"; poem.appendChild(g); return; }
+    renderRow(poem, line, pick);
+  });
+
+  var input = document.getElementById("input");
+  var yours = document.getElementById("yours");
+  var stats = document.getElementById("stats");
+  function update() {
+    var text = input.value;
+    yours.innerHTML = "";
+    var ps = pieces(text);
+    var shared = ps.filter(function (p) { return where[p.id]; }).length;
+    ps.forEach(function (p, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "tok c" + (i % 4) + (p.s === "\n" ? " nl" : "") + (p.bad ? " bad" : "");
+      b.innerHTML = '<span class="s"></span><span class="n"></span>';
+      b.firstChild.textContent = show(p.s);
+      b.lastChild.textContent = p.id;
+      b.addEventListener("click", function () { pick(p, b); });
+      yours.appendChild(b);
+    });
+    stats.innerHTML =
+      '<span><b>' + ps.length + '</b>tokenů</span>' +
+      '<span><b>' + Array.from(text).length + '</b>znaků</span>' +
+      '<span><b>' + enc.encode(text).length + '</b>bajtů</span>' +
+      '<span><b>' + shared + '</b>už řekl Li Po</span>';
+  }
+  input.addEventListener("input", update);
+  update();
+})();
+</script>

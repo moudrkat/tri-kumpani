@@ -53,7 +53,7 @@ class KumpanBPE:
     def _ids(self, kus: str) -> list[int]:
         return [self.idx[z] for z in kus]
 
-    def tokeny(self, text: str) -> list[str]:
+    def encode(self, text: str) -> list[int]:
         out = []
         for kus in PREDSEKANI.findall(text):
             ids = self._ids(kus)
@@ -63,8 +63,22 @@ class KumpanBPE:
                 if par not in self.pravidla:
                     break
                 ids = sluc(ids, par, self.pravidla[par])
-            out.extend(self.slovnik[i] for i in ids)
+            out.extend(ids)
         return out
+
+    def tokeny(self, text: str) -> list[str]:
+        return [self.slovnik[i] for i in self.encode(text)]
+
+    def id(self, token: str) -> int:
+        return next(i for i, t in self.slovnik.items() if t == token)
+
+    def export(self) -> dict:
+        """Slovník a pravidla v pořadí, jak se učila; z toho appka tokenizuje stejně."""
+        return {
+            "abeceda": self.znaky,
+            "pravidla": [[a, b, novy] for (a, b), novy in self.pravidla.items()],
+            "slovnik": [self.slovnik[i] for i in range(len(self.slovnik))],
+        }
 
 
 def ja(vers: str) -> str:

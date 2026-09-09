@@ -1,16 +1,17 @@
 # li-po-jacket
 
-Na zádech bundy bude Li Po, **Tři kumpáni** v Mathesiově přebásnění.
-Každý verš třikrát pod sebou, pokaždé jiným tokenizerem, protože kumpáni
-jsou tři:
+Na zádech bundy jsou první čtyři verše Li Po, **Tři kumpáni** v Mathesiově
+přebásnění, končí „se mi uklání". Jednou, ale tak, jak je vidí jazykový model:
+každý token ve svém políčku a pod ním jeho číslo ve slovníku o200k_base
+(tokenizer GPT-4o a novějších). Na rukávu je QR na appku, kde tentýž
+tokenizer rozseká cokoli a řekne, kolik z toho už Li Po řekl.
 
-```text
-já      Jasmínu▁loubí.▁Sedím▁u▁vína,                   po slovech
-měsíc   Jas·mín·u·▁lou·bí·.·▁Se·dím·▁u·▁ví·na·,        BPE, kusy naučené z básně
-stín    4a 61 73 6d c3 ad 6e 75 20 6c 6f 75 62 c3 ad   bajty UTF-8
-```
+- `bunda.py` → `bunda.png` / `bunda.svg`: tisková předloha na záda
+- `rukav_qr.png` / `.svg`: QR na rukáv, vede na appku
+- `app/index.html`: appka, běží celá v prohlížeči (tokenizer z CDN, 2 MB)
+- `napis.py`: první verze, každý verš třikrát (slova, vlastní BPE, bajty)
 
-Po cestě se naučím, co je pod textem: bajty, tokenizery, BPE a word2vec.
+Po cestě se učím, co je pod textem: bajty, tokenizery, BPE a word2vec.
 
 ## Spuštění
 
@@ -19,6 +20,7 @@ uv sync --extra dev
 uv run python napis.py                  # celý nápis na terminál
 uv run python napis.py --sloka 1        # jen první sloka
 uv run python napis.py --verse 1-4      # nápis končí „se mi uklání“
+uv sync --extra tisk
 uv run python bunda.py                  # tisková předloha bunda.svg + bunda.png
 uv run pytest
 ```
@@ -47,8 +49,8 @@ a nesrostla dvě slova.
   kolik tokenů dá GPT-2 tokenizer na Tři kumpány a kde seká jinak.
 - Nakreslit vektory z lekce 4 (PCA do 2D) a přidat víc básní, ať je na čem
   trénovat.
-- Appka k bundě: naskenovat QR na rukávu a vidět, jak se verš rozpadá na
-  tokeny živě. Až bude foto bundy.
+- Appka: word2vec sousedi tokenu, natrénované na celých Zpěvech staré Číny.
+- Až bude foto bundy: přeměřit šířku zad proti `bunda.py`.
 
 ## Básně
 
