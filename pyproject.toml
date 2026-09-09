@@ -1,0 +1,14 @@
+[project]
+name = "li-po-jacket"
+version = "0.1.0"
+description = "Nápis na bundu podle Li Po a po cestě tokenizery, bajty a word2vec"
+requires-python = ">=3.12"
+dependencies = ["numpy>=2.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+srovnani = ["tiktoken>=0.8", "tokenizers>=0.20"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
