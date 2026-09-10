@@ -45,7 +45,7 @@ uv run pytest
 
 - `app/` static app, one file, no network
 - `model/precompute.py` what the model wrote down while reading
-- `bunda*.py`, `rukav.py` print templates for back and sleeve
+- `bunda*.py`, `rukav.py` print templates for back (numbers large, words large, or colored boxes) and sleeve
 - `docs/` the built app, served by GitHub Pages
 - `space/README.md` front matter for the Hugging Face Space; upload it with `docs/index.html`
 - `lekce/` byte encoding, tokenizers, BPE from scratch, word2vec in numpy
