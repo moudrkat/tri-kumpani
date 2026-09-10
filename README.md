@@ -12,7 +12,23 @@ a já jsem sám. Vtom náhle nad strání
 kulatý měsíc se mi uklání
 ```
 
-App: https://huggingface.co/spaces/Unt1l1f1nd/tri-kumpani (the sleeve QR points to https://unt1l1f1nd-tri-kumpani.static.hf.space/)
+Mathesius worked from German and French versions, so the jasmine, the bower
+and the bow are his. Li Po's opening couplets, and what they say:
+
+```
+花间一壶酒    Among the flowers, a jug of wine.
+独酌无相亲    I drink alone, no one close.
+举杯邀明月    I raise my cup and invite the bright moon;
+对影成三人    with my shadow, that makes three.
+```
+
+The Czech, word for word: *A jasmine bower. I sit with wine; the good hour calls
+for good company, and I am alone. Then suddenly, over the hillside, the round
+moon bows to me.*
+
+App: https://moudrkat.github.io/tri-kumpani/ (also on
+[Hugging Face](https://huggingface.co/spaces/Unt1l1f1nd/tri-kumpani)).
+The sleeve carries the address in plain text.
 
 ## Run
 
@@ -29,7 +45,8 @@ uv run pytest
 
 - `app/` static app, one file, no network
 - `model/precompute.py` what the model wrote down while reading
-- `bunda*.py`, `rukav_qr.*` print templates for back and sleeve
-- `space/README.md` front matter for the Hugging Face Space; upload it with `app/index.html`
+- `bunda*.py`, `rukav.py` print templates for back and sleeve
+- `docs/` the built app, served by GitHub Pages
+- `space/README.md` front matter for the Hugging Face Space; upload it with `docs/index.html`
 - `lekce/` byte encoding, tokenizers, BPE from scratch, word2vec in numpy
 - `basne/` the poem, Czech and original
