@@ -104,13 +104,14 @@
   .head .l b { color: var(--ink); font-weight: 400; white-space: pre; overflow: hidden; text-overflow: ellipsis; max-width: 8ch; }
   .head.on .l { color: var(--ink); }
 
-  .tri { display: grid; grid-template-columns: 2fr 5fr 5fr; gap: 0 32px; align-items: start; }
-  .sl { min-width: 0; }
+  .tri { display: grid; grid-template-columns: 2fr 5fr 5fr; grid-template-rows: auto auto auto auto auto; gap: 0 32px; }
+  .sl { min-width: 0; display: grid; grid-template-rows: subgrid; grid-row: span 5; }
   .sl p { margin: 0; }
   .sl .zh { font-family: var(--cjk); font-size: 20px; letter-spacing: 0.08em; color: var(--moon); white-space: nowrap; line-height: 1.6; }
   .sl .v { font-family: var(--serif); font-style: italic; font-size: 17px; line-height: 1.4; color: var(--moon); }
   .sl .gap { height: 12px; }
-  .sl .kdo.stin-l { margin: 22px 0 4px; color: var(--muted); }
+  .sl .kdo.stin-l { margin: 0 0 4px; padding-top: 26px; color: var(--muted); align-self: end; }
+  .tri-wrap { margin-bottom: 22px; }
   .sl .stin { color: var(--ink); cursor: pointer; white-space: normal; overflow-wrap: anywhere; text-shadow: 0 0 18px rgba(242,239,233,0.14); min-height: 1.4em; }
   .sl .stin:hover { color: var(--moon); animation-play-state: paused; opacity: 1; }
   @keyframes dech { 0%, 100% { opacity: 0.38; } 50% { opacity: 1; } }
@@ -201,10 +202,11 @@
     <h2 data-t="h2shadow"></h2>
     <p class="zh-line">我舞影零乱<i data-t="zhShadow"></i></p>
     <p class="hint" data-t="hintShadow"></p>
-    <div class="ctrl">
-      <label><span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
-    </div>
     <div class="tri-wrap" id="triWrap"><div class="tri" id="tri"></div></div>
+    <div class="ctrl">
+      <label><span data-t="wine"></span> <span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
+    </div>
+    <p class="hint" data-t="hintWine"></p>
     <p class="note" data-t="note"></p>
   </section>
 
@@ -229,8 +231,10 @@ window.QWEN = __QWEN__;
       layer: "vrstva", attCap: ["Token ", ", vrstva ", ", hlava ", ": dívá se nejvíc na "],
       eyebrow2: "Li Po · 月下独酌 · kolem roku 744",
       h2shadow: "Stín", zhShadow: "tančím, a stín se rozpadá",
-      hintShadow: "Celá báseň třikrát: originál, doslovný anglický překlad a Mathesiovi Tři kumpáni, kteří z ní vyrostli. Čtrnáct veršů, žádný jasmín, ale měsíc a stín ano. Pod každou z nich model dopisuje verš, který tam Li Po nenapsal. Model je stín: jde za textem, ale nepije. Zná jen pravděpodobnosti dalšího tokenu, a <b>teplota</b> je jeho víno. Střízlivý bere vždycky ten nejjistější token a opakuje, co už četl. Opilý sahá i po nepravděpodobných, až se rozpadne, a padají z něj čínské znaky. Není divu, stín je taky z Číny: Qwen vyrostl v Alibabě v Chang-čou, dvanáct set let po Li Poovi. Ťukni na verš stínu, zkusí to znovu.",
-      kdo: { zh: "Li Po", en: "doslovný překlad", cs: "Bohumil Mathesius" }, shadow: "stín", firstTok: "první token ",
+      hintShadow: "Celá báseň třikrát: originál, doslovný anglický překlad a Mathesiovi Tři kumpáni, kteří z ní vyrostli. Čtrnáct veršů, žádný jasmín, ale měsíc a stín ano. A pod každou z nich <b>stín</b>: model Qwen 3.5, který jde za textem a dopisuje verše, které tam Li Po nenapsal. Ťukni na ně, zkusí to znovu.",
+      wine: "víno",
+      hintWine: "Stín jde za textem, ale nepije. Zná jen pravděpodobnosti dalšího tokenu, a <b>teplota</b> je jeho víno. Střízlivý bere vždycky ten nejjistější token a opakuje, co už četl. Opilý sahá i po nepravděpodobných, až se rozpadne, a padají z něj čínské znaky. Není divu, stín je taky z Číny: Qwen vyrostl v Alibabě v Chang-čou, dvanáct set let po Li Poovi.",
+      kdo: { zh: "Li Po", en: "doslovný překlad", cs: "Bohumil Mathesius" }, shadow: "stín · Qwen 3.5", firstTok: "první token ",
       note: "<b>无情游</b> je doslova „bezcitné putování\": přátelství, které nestojí na citech ani na lidech, jako to s měsícem. <b>云汉</b>, „oblačná řeka\", je Mléčná dráha.",
       foot1: "永结无情游, píše Li Po na konci: pojďme uzavřít přátelství bez citu. Jestli Qwen 3.5 0.8B něco cítí, je otázka, na kterou tahle stránka neumí a nechce odpovídat. Báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.",
       foot2: "Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano."
@@ -243,8 +247,10 @@ window.QWEN = __QWEN__;
       layer: "layer", attCap: ["Token ", ", layer ", ", head ", ": looks mostly at "],
       eyebrow2: "Li Po · 月下独酌 · around 744",
       h2shadow: "Shadow", zhShadow: "I dance, and the shadow tumbles apart",
-      hintShadow: "The whole poem three times: the original, a literal English rendering, and Mathesius's Czech Three Companions that grew out of it. Fourteen lines, no jasmine, but moon and shadow, yes. Under each, the model writes the line Li Po never wrote. The model is the shadow: it follows the text but does not drink. It knows only the probabilities of the next token, and <b>temperature</b> is its wine. Sober, it always takes the most likely token and repeats what it has read. Drunk, it reaches for the unlikely ones until it falls apart and Chinese characters tumble out. No wonder, the shadow is from China too: Qwen grew up at Alibaba in Hangzhou, twelve hundred years after Li Po. Tap the shadow's line and it tries again.",
-      kdo: { zh: "Li Po", en: "literal rendering", cs: "Bohumil Mathesius" }, shadow: "shadow", firstTok: "first token ",
+      hintShadow: "The whole poem three times: the original, a literal English rendering, and Mathesius's Czech Three Companions that grew out of it. Fourteen lines, no jasmine, but moon and shadow, yes. And under each of them the <b>shadow</b>: the model Qwen 3.5, which follows the text and writes the lines Li Po never wrote. Tap them and it tries again.",
+      wine: "wine",
+      hintWine: "The shadow follows the text but does not drink. It knows only the probabilities of the next token, and <b>temperature</b> is its wine. Sober, it always takes the most likely token and repeats what it has read. Drunk, it reaches for the unlikely ones until it falls apart and Chinese characters tumble out. No wonder, the shadow is from China too: Qwen grew up at Alibaba in Hangzhou, twelve hundred years after Li Po.",
+      kdo: { zh: "Li Po", en: "literal rendering", cs: "Bohumil Mathesius" }, shadow: "shadow · Qwen 3.5", firstTok: "first token ",
       note: "<b>无情游</b> is literally a “feelingless wandering”: a friendship that rests neither on feelings nor on people, like the one with the moon. <b>云汉</b>, the “cloud river”, is the Milky Way.",
       foot1: "永结无情游, Li Po writes at the end: let us bind a friendship past all feeling. Whether Qwen 3.5 0.8B feels anything is a question this page cannot and will not answer. It read the poem once and its notes are part of the page. Nothing is sent anywhere. The English rendering of the original is our own and literal.",
       foot2: "Li Po wrote 月下独酌 around 744. Bohumil Mathesius rendered it in Czech in Zpěvy staré Číny (Songs of Old China), 1939. There is no jasmine and no bower in the original, but the shadow and the moon are there."
@@ -347,11 +353,13 @@ window.QWEN = __QWEN__;
   JAZ.forEach(function (j) {
     var k = j[0], col = document.createElement("div"); col.className = "sl"; pokus[k] = 0;
     var kdo = document.createElement("p"); kdo.className = "kdo"; kdo.textContent = TXT[lang].kdo[k]; col.appendChild(kdo); kdoEl[k] = kdo;
+    var blok = document.createElement("div");
     D[k].radky.forEach(function (r) {
       var e = document.createElement("p");
       if (r === "") e.className = "gap"; else { e.className = j[1]; e.textContent = r; }
-      col.appendChild(e);
+      blok.appendChild(e);
     });
+    col.appendChild(blok);
     var l = document.createElement("p"); l.className = "kdo stin-l"; l.textContent = TXT[lang].shadow; col.appendChild(l); stinLbl.push(l);
     var st = document.createElement("p"); st.className = j[1] + " stin";
     st.addEventListener("click", function () { pokus[k]++; drawTmp(); });
