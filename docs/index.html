@@ -115,7 +115,13 @@
   .sl .gap { height: 12px; }
   .sl .kdo.stin-l { margin: 22px 0 4px; color: var(--muted); }
   .sl .stin { color: var(--ink); cursor: pointer; white-space: normal; overflow-wrap: anywhere; text-shadow: 0 0 18px rgba(242,239,233,0.14); min-height: 1.4em; }
-  .sl .stin:hover { color: var(--moon); }
+  .sl .stin:hover { color: var(--moon); animation-play-state: paused; opacity: 1; }
+  @keyframes dech { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .sl .stin, .tri-wrap::after { animation: dech 3.2s ease-in-out infinite; }
+  .tri-wrap { position: relative; }
+  .tri-wrap::after { content: ""; position: absolute; top: 0; right: 0; bottom: 14px; width: 72px; pointer-events: none; background: linear-gradient(to right, transparent, var(--ground)); display: none; }
+  .tri-wrap.dal::after { display: block; }
+  @media (prefers-reduced-motion: reduce) { .sl .stin, .tri-wrap::after { animation: none; } }
   .sl .cap { margin-top: 8px; }
   .note { color: var(--muted); max-width: 64ch; margin: 26px 0 0; font-size: 14px; }
   .note b { color: var(--ink); font-weight: 500; font-family: var(--cjk); font-style: normal; letter-spacing: 0.06em; }
@@ -200,7 +206,7 @@
     <div class="ctrl">
       <label><span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
     </div>
-    <div class="tri" id="tri"></div>
+    <div class="tri-wrap" id="triWrap"><div class="tri" id="tri"></div></div>
     <p class="note"><b>无情游</b> je doslova „bezcitné putování": přátelství, které nestojí na citech ani na lidech, jako to s měsícem. <b>云汉</b>, „oblačná řeka", je Mléčná dráha.</p>
   </section>
 
@@ -321,6 +327,10 @@ window.QWEN = {"model": "Qwen/Qwen3.5-0.8B-Base", "verse": ["Jasmínu loubí. Se
   }
   tmp.addEventListener("input", function () { JAZ.forEach(function (j) { pokus[j[0]] = 0; }); drawTmp(); });
   drawTmp();
+
+  var triWrap = document.getElementById("triWrap");
+  function okraj() { triWrap.classList.toggle("dal", tri.scrollLeft + tri.clientWidth < tri.scrollWidth - 4); }
+  tri.addEventListener("scroll", okraj); window.addEventListener("resize", okraj); okraj();
 })();
 </script>
 
