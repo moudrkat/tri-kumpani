@@ -49,4 +49,4 @@ uv run pytest
 - `docs/` the built app, served by GitHub Pages
 - `space/README.md` front matter for the Hugging Face Space; upload it with `docs/index.html`
 - `lekce/` byte encoding, tokenizers, BPE from scratch, word2vec in numpy
-- `basne/` the poem, Czech and original
+- `basne/` the poem: Czech, and the original with a plain English rendering

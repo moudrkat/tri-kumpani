@@ -1,5 +1,5 @@
 <title>Tři kumpáni</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500&family=Noto+Serif+SC:wght@500&display=swap">
 <style>
   :root {
     --ground: #0b0b0b;
@@ -14,6 +14,7 @@
     --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
     --serif: "Cormorant Garamond", "Georgia", serif;
     --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --cjk: "Noto Serif SC", "Songti SC", "SimSun", "Noto Serif CJK SC", serif;
   }
   html { color-scheme: dark; }
   body {
@@ -93,10 +94,12 @@
   .head .l b { color: var(--ink); font-weight: 400; white-space: pre; overflow: hidden; text-overflow: ellipsis; max-width: 8ch; }
   .head.on .l { color: var(--ink); }
 
-  .verse5 { font-family: var(--serif); font-size: 32px; line-height: 1.25; margin: 0 0 6px; }
-  .verse5 span { font-style: italic; }
-  .verse5 small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .verse5 + .verse5 { margin-top: 20px; }
+  .original { display: grid; grid-template-columns: max-content 1fr; gap: 10px 36px; align-items: baseline; max-width: 640px; }
+  .original .zh { font-family: var(--cjk); font-size: 24px; letter-spacing: 0.08em; color: var(--moon); white-space: nowrap; }
+  .original .en { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.3; }
+  .original .gap { grid-column: 1 / -1; height: 10px; }
+  .note { color: var(--muted); max-width: 64ch; margin: 26px 0 0; font-size: 14px; }
+  .note b { color: var(--ink); font-weight: 500; font-family: var(--cjk); font-style: normal; letter-spacing: 0.06em; }
 
   footer { border-top: 1px solid var(--line); padding-top: 18px; color: var(--dim); font-size: 13px; max-width: 64ch; }
   footer p { margin: 0 0 8px; }
@@ -105,6 +108,8 @@
     header svg { max-width: 260px; }
     h1 { font-size: 52px; }
     .heads { grid-template-columns: repeat(4, 1fr); }
+    .original { grid-template-columns: 1fr; gap: 2px 0; }
+    .original .en { margin-bottom: 12px; }
   }
   @media (prefers-reduced-motion: reduce) { .tok { transition: none; } }
 </style>
@@ -169,15 +174,33 @@
   </section>
 
   <section>
-    <h2>Pátý verš</h2>
-    <p class="hint">Co by model napsal dál, kdyby ho nikdo nezastavil.</p>
-    <p class="verse5"><small>vždycky stejně</small><span id="greedy"></span></p>
-    <p class="verse5"><small>jednou z mnoha možností</small><span id="sampled"></span></p>
-    <p class="cap" id="verse5cap"></p>
+    <p class="eyebrow">Li Po · 月下独酌 · kolem roku 744</p>
+    <h2>Sám piju pod měsícem</h2>
+    <p class="hint">Originál, ze kterého Mathesiovy Tři kumpáni vyrostli. Čtrnáct veršů, žádný jasmín, žádné loubí, ale měsíc a stín ano.</p>
+    <div class="original">
+      <span class="zh">花间一壶酒</span><span class="en">Among the flowers, a jug of wine.</span>
+      <span class="zh">独酌无相亲</span><span class="en">I drink alone, no one close.</span>
+      <span class="zh">举杯邀明月</span><span class="en">I raise my cup and invite the bright moon;</span>
+      <span class="zh">对影成三人</span><span class="en">with my shadow, that makes three.</span>
+      <span class="gap"></span>
+      <span class="zh">月既不解饮</span><span class="en">The moon, though, does not know how to drink,</span>
+      <span class="zh">影徒随我身</span><span class="en">and the shadow only follows my body around.</span>
+      <span class="zh">暂伴月将影</span><span class="en">Still, for a while, moon and shadow keep me company:</span>
+      <span class="zh">行乐须及春</span><span class="en">joy has to be taken while it is spring.</span>
+      <span class="gap"></span>
+      <span class="zh">我歌月徘徊</span><span class="en">I sing, and the moon drifts back and forth;</span>
+      <span class="zh">我舞影零乱</span><span class="en">I dance, and the shadow tumbles apart.</span>
+      <span class="zh">醒时同交欢</span><span class="en">Sober, we share the fun together;</span>
+      <span class="zh">醉后各分散</span><span class="en">drunk, we each go our own way.</span>
+      <span class="gap"></span>
+      <span class="zh">永结无情游</span><span class="en">Let us bind a friendship past all feeling</span>
+      <span class="zh">相期邈云汉</span><span class="en">and meet again far off, in the river of stars.</span>
+    </div>
+    <p class="note"><b>无情游</b> je doslova „bezcitné putování": přátelství, které nestojí na citech ani na lidech, jako to s měsícem. <b>云汉</b>, „oblačná řeka", je Mléčná dráha.</p>
   </section>
 
   <footer>
-    <p>Model Qwen 2.5 0.5B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá.</p>
+    <p>Model Qwen 2.5 0.5B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
     <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
   </footer>
 </main>
@@ -258,13 +281,6 @@ window.QWEN = __QWEN__;
       top.slice(0, 4).map(function (p) { return '<b>' + esc(show(T[p[1]].s)) + '</b> <i>' + Math.round(p[0] * 100) + '%</i>'; }).join(', ') + '.';
   }
   attL.addEventListener("input", draw);
-
-  document.getElementById("greedy").textContent = Q.pokracovani.greedy;
-  document.getElementById("sampled").textContent = Q.pokracovani.vzorek;
-  var same = Q.verse.indexOf(Q.pokracovani.greedy.trim());
-  document.getElementById("verse5cap").innerHTML = same >= 0
-    ? 'Nejjistější pokračování je verš ' + (same + 1) + ' ještě jednou. Model se opakuje jako kumpán po třetí sklenici.'
-    : 'Model Li Po nezná, hádá z toho, co má před sebou.';
 
   draw();
 })();
