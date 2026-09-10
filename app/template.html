@@ -104,14 +104,15 @@
   .head .l b { color: var(--ink); font-weight: 400; white-space: pre; overflow: hidden; text-overflow: ellipsis; max-width: 8ch; }
   .head.on .l { color: var(--ink); }
 
-  .tri { display: grid; grid-template-columns: 2fr 5fr 5fr; grid-template-rows: auto auto auto auto auto; gap: 0 32px; }
-  .sl { min-width: 0; display: grid; grid-template-rows: subgrid; grid-row: span 5; }
+  .tri { display: grid; grid-template-columns: 2fr 5fr 5fr; gap: 0 32px; }
+  .sl { min-width: 0; }
   .sl p { margin: 0; }
   .sl .zh { font-family: var(--cjk); font-size: 20px; letter-spacing: 0.08em; color: var(--moon); white-space: nowrap; line-height: 1.6; }
   .sl .v { font-family: var(--serif); font-style: italic; font-size: 17px; line-height: 1.4; color: var(--moon); }
   .sl .gap { height: 12px; }
-  .sl .kdo.stin-l { margin: 0 0 4px; padding-top: 26px; color: var(--muted); align-self: end; }
-  .tri-wrap { margin-bottom: 22px; }
+  .sl .kdo.stin-l { margin: 0 0 4px; color: var(--muted); }
+  .tri-wrap { margin-bottom: 18px; }
+  .tri-wrap + .ctrl { margin-top: 26px; }
   .sl .stin { color: var(--ink); cursor: pointer; white-space: normal; overflow-wrap: anywhere; text-shadow: 0 0 18px rgba(242,239,233,0.14); min-height: 1.4em; }
   .sl .stin:hover { color: var(--moon); animation-play-state: paused; opacity: 1; }
   @keyframes dech { 0%, 100% { opacity: 0.38; } 50% { opacity: 1; } }
@@ -130,7 +131,8 @@
     header svg { max-width: 260px; }
     h1 { font-size: 52px; }
     .heads { grid-template-columns: repeat(4, 1fr); }
-    .tri { grid-template-columns: 150px 270px 290px; gap: 0 28px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+    .tri { grid-template-columns: 150px 270px 290px; gap: 0 28px; }
+    .tri-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
   }
   @media (prefers-reduced-motion: reduce) { .tok { transition: none; } }
 </style>
@@ -202,10 +204,11 @@
     <h2 data-t="h2shadow"></h2>
     <p class="zh-line">我舞影零乱<i data-t="zhShadow"></i></p>
     <p class="hint" data-t="hintShadow"></p>
-    <div class="tri-wrap" id="triWrap"><div class="tri" id="tri"></div></div>
+    <div class="tri-wrap" id="poemWrap"><div class="tri" id="poems"></div></div>
     <div class="ctrl">
       <label><span data-t="wine"></span> <span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
     </div>
+    <div class="tri-wrap" id="shadowWrap"><div class="tri" id="shadows"></div></div>
     <p class="hint" data-t="hintWine"></p>
     <p class="note" data-t="note"></p>
   </section>
@@ -346,26 +349,27 @@ window.QWEN = __QWEN__;
   window.__draw = draw;
   draw();
 
-  var D = Q.dalsi_vers, tmp = document.getElementById("tmp"), tmpv = document.getElementById("tmpv"), tri = document.getElementById("tri");
+  var D = Q.dalsi_vers, tmp = document.getElementById("tmp"), tmpv = document.getElementById("tmpv");
+  var poems = document.getElementById("poems"), shadows = document.getElementById("shadows");
   var JAZ = [["zh", "zh"], ["en", "v"], ["cs", "v"]];
   var pokus = {}, stinEl = {}, capEl = {};
   tmp.max = D.cs.teploty.length - 1;
   JAZ.forEach(function (j) {
     var k = j[0], col = document.createElement("div"); col.className = "sl"; pokus[k] = 0;
     var kdo = document.createElement("p"); kdo.className = "kdo"; kdo.textContent = TXT[lang].kdo[k]; col.appendChild(kdo); kdoEl[k] = kdo;
-    var blok = document.createElement("div");
     D[k].radky.forEach(function (r) {
       var e = document.createElement("p");
       if (r === "") e.className = "gap"; else { e.className = j[1]; e.textContent = r; }
-      blok.appendChild(e);
+      col.appendChild(e);
     });
-    col.appendChild(blok);
-    var l = document.createElement("p"); l.className = "kdo stin-l"; l.textContent = TXT[lang].shadow; col.appendChild(l); stinLbl.push(l);
+    poems.appendChild(col);
+    var col2 = document.createElement("div"); col2.className = "sl";
+    var l = document.createElement("p"); l.className = "kdo stin-l"; l.textContent = TXT[lang].shadow; col2.appendChild(l); stinLbl.push(l);
     var st = document.createElement("p"); st.className = j[1] + " stin";
     st.addEventListener("click", function () { pokus[k]++; drawTmp(); });
-    col.appendChild(st); stinEl[k] = st;
-    var c = document.createElement("p"); c.className = "cap"; col.appendChild(c); capEl[k] = c;
-    tri.appendChild(col);
+    col2.appendChild(st); stinEl[k] = st;
+    var c = document.createElement("p"); c.className = "cap"; col2.appendChild(c); capEl[k] = c;
+    shadows.appendChild(col2);
   });
   function drawTmp() {
     var i = tmp.value;
@@ -383,8 +387,14 @@ window.QWEN = __QWEN__;
   window.__drawTmp = drawTmp;
   drawTmp();
 
-  var triWrap = document.getElementById("triWrap");
-  function okraj() { triWrap.classList.toggle("dal", tri.scrollLeft + tri.clientWidth < tri.scrollWidth - 4); }
-  tri.addEventListener("scroll", okraj); window.addEventListener("resize", okraj); okraj();
+  var wraps = [document.getElementById("poemWrap"), document.getElementById("shadowWrap")];
+  function okraj() { wraps.forEach(function (w) { w.classList.toggle("dal", w.scrollLeft + w.clientWidth < w.scrollWidth - 4); }); }
+  wraps.forEach(function (w, i) {
+    w.addEventListener("scroll", function () {
+      var o = wraps[1 - i]; if (Math.abs(o.scrollLeft - w.scrollLeft) > 1) o.scrollLeft = w.scrollLeft;
+      okraj();
+    });
+  });
+  window.addEventListener("resize", okraj); okraj();
 })();
 </script>
