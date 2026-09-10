@@ -10,9 +10,9 @@ Výstup model/qwen.json:
   attention       len(att_vrstvy) × 8 hlav × N × N, kvantované na bajt (0..255 = 0..1), base64
   logit_lens      pro každou z 24 vrstev a pozici top-3 tokeny, které by model hádal jako další
   dalsi_vers      pro čínský originál, anglický překlad a celé Mathesiovy Tři kumpány:
-                  celý text po řádcích a jak by model pokračoval dalším veršem. Pro každou
-                  teplotu šest vzorků a přesné pravděpodobnosti 40 nejnadějnějších prvních
-                  tokenů při té teplotě (teplota 0 = greedy, jeden verš)
+                  celý text po řádcích a jak by model pokračoval, až čtyři verše. Pro každou
+                  teplotu šest vzorků (každý = seznam řádků) a přesné pravděpodobnosti 40
+                  nejnadějnějších prvních tokenů při té teplotě (teplota 0 = greedy, jeden vzorek)
 
     uv sync --extra model
     uv run python model/precompute.py      # na GPU, když je; na CPU to trvá pár minut
@@ -69,7 +69,8 @@ for l, h in enumerate(out.hidden_states[1:]):               # hidden_states[0] j
 
 # další verš: čistá teplota, bez top-p a top-k, ať posuvník v appce říká pravdu
 TEPLOTY = [0.3, 0.6, 0.8, 1.0, 1.3, 1.7]
-cisty = dict(top_p=1.0, top_k=0, repetition_penalty=1.0, max_new_tokens=24)
+cisty = dict(top_p=1.0, top_k=0, repetition_penalty=1.0, max_new_tokens=96)
+VERSU = 4
 
 
 def dopis(text):
@@ -77,7 +78,9 @@ def dopis(text):
     prompt = tok(text + "\n", return_tensors="pt").input_ids.to(device)
 
     def radek(seq):
-        return tok.decode(seq[prompt.shape[1]:], skip_special_tokens=True).lstrip("\n").split("\n")[0].strip()
+        """Prvních pár neprázdných řádků, co model dopsal."""
+        radky = [r.strip() for r in tok.decode(seq[prompt.shape[1]:], skip_special_tokens=True).split("\n")]
+        return [r for r in radky if r][:VERSU]
 
     with torch.no_grad():
         logity = model(prompt).logits[0, -1].float()

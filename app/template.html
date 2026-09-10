@@ -48,11 +48,10 @@
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
-  .lang { position: absolute; top: 0; right: 0; margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+  .lang { text-align: right; margin: 0 0 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
   .lang button { all: unset; cursor: pointer; color: var(--dim); }
   .lang button.on { color: var(--ink); }
   .lang button:hover { color: var(--muted); }
-  header > div { position: relative; padding-top: 4px; }
   .poem-en { color: var(--muted); font-size: 14px; margin: 12px 0 0; max-width: 48ch; }
   .poem-en:empty { display: none; }
   .poem { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35; margin: 0; color: var(--moon); }
@@ -114,12 +113,11 @@
   .sl .kdo.stin-l { margin: 22px 0 4px; color: var(--muted); }
   .sl .stin { color: var(--ink); cursor: pointer; white-space: normal; overflow-wrap: anywhere; text-shadow: 0 0 18px rgba(242,239,233,0.14); min-height: 1.4em; }
   .sl .stin:hover { color: var(--moon); animation-play-state: paused; opacity: 1; }
-  @keyframes dech { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-  .sl .stin, .tri-wrap::after { animation: dech 3.2s ease-in-out infinite; }
+  @keyframes dech { 0%, 100% { opacity: 0.38; } 50% { opacity: 1; } }
+  .sl .stin, .tri-wrap::after { animation: dech 2.6s ease-in-out infinite; }
   .tri-wrap { position: relative; }
   .tri-wrap::after { content: ""; position: absolute; top: 0; right: 0; bottom: 14px; width: 72px; pointer-events: none; background: linear-gradient(to right, transparent, var(--ground)); display: none; }
   .tri-wrap.dal::after { display: block; }
-  @media (prefers-reduced-motion: reduce) { .sl .stin, .tri-wrap::after { animation: none; } }
   .sl .cap { margin-top: 8px; }
   .note { color: var(--muted); max-width: 64ch; margin: 26px 0 0; font-size: 14px; }
   .note b { color: var(--ink); font-weight: 500; font-family: var(--cjk); font-style: normal; letter-spacing: 0.06em; }
@@ -137,9 +135,9 @@
 </style>
 
 <main>
+  <p class="lang" id="lang"><button type="button" data-l="cs">česky</button> · <button type="button" data-l="en">english</button></p>
   <header>
     <div>
-      <p class="lang" id="lang"><button type="button" data-l="cs">česky</button> · <button type="button" data-l="en">english</button></p>
       <p class="eyebrow" data-t="eyebrow1"></p>
       <h1>Tři kumpáni</h1>
       <p class="poem" id="poem"></p>
@@ -366,7 +364,8 @@ window.QWEN = __QWEN__;
     tmpv.textContent = D.cs.teploty[i].t.toFixed(1);
     JAZ.forEach(function (j) {
       var k = j[0], d = D[k], z = d.teploty[i], vs = z.verse;
-      stinEl[k].textContent = vs[pokus[k] % vs.length] || "…";
+      var vv = vs[pokus[k] % vs.length]; if (typeof vv === "string") vv = [vv];
+      stinEl[k].innerHTML = vv.length ? vv.map(esc).join("<br>") : "…";
       var top = d.kandidati.map(function (c, n) { return [z.p[n], c.s]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3);
       capEl[k].innerHTML = TXT[lang].firstTok + top.map(function (c) { return '<b>' + esc(show(c[1])) + '</b> <i>' + Math.round(c[0] * 100) + '%</i>'; }).join(', ') +
         (z.t === 0 ? '' : ' · ' + (pokus[k] % vs.length + 1) + '/' + vs.length);
