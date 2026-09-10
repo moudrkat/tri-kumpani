@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="1600" height="1200" role="img" aria-label="Měsíc nad větví jasmínu">
+      <rect width="100%" height="100%" fill="#0b0b0b"/>
+      <defs>
+        <radialGradient id="moon" cx="38%" cy="34%" r="72%">
+          <stop offset="0" stop-color="#fffaf0"/>
+          <stop offset="0.7" stop-color="#efe4c6"/>
+          <stop offset="1" stop-color="#d3c6a3"/>
+        </radialGradient>
+        <g id="flower">
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(0)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(72)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(144)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(216)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(288)"/>
+          <circle r="2.6" fill="#e0c56a"/>
+        </g>
+        <g id="bud">
+          <ellipse rx="3" ry="6" fill="#efe8d6"/>
+        </g>
+      </defs>
+      <circle cx="222" cy="78" r="60" fill="url(#moon)"/>
+      <circle cx="240" cy="58" r="9" fill="#cfc19c" opacity="0.45"/>
+      <circle cx="204" cy="94" r="6" fill="#cfc19c" opacity="0.4"/>
+      <circle cx="238" cy="104" r="4" fill="#cfc19c" opacity="0.4"/>
+      <circle cx="222" cy="78" r="66" fill="none" stroke="#f3ead2" stroke-opacity="0.12" stroke-width="10"/>
+      <path d="M6 232 C 60 206, 96 176, 150 146 C 184 128, 214 134, 250 150" stroke="#5a6a47" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M96 176 C 108 160, 122 152, 142 150" stroke="#5a6a47" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M186 138 C 190 122, 198 112, 212 106" stroke="#5a6a47" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="46" cy="202" rx="17" ry="6" fill="#4d6a3e" transform="rotate(-32 46 202)"/>
+      <ellipse cx="74" cy="198" rx="15" ry="5.5" fill="#436036" transform="rotate(20 74 198)"/>
+      <ellipse cx="116" cy="176" rx="17" ry="6" fill="#4d6a3e" transform="rotate(-38 116 176)"/>
+      <ellipse cx="132" cy="166" rx="14" ry="5" fill="#436036" transform="rotate(28 132 166)"/>
+      <ellipse cx="166" cy="152" rx="16" ry="5.5" fill="#4d6a3e" transform="rotate(-18 166 152)"/>
+      <ellipse cx="232" cy="152" rx="15" ry="5.5" fill="#436036" transform="rotate(34 232 152)"/>
+      <use href="#flower" x="142" y="150"/>
+      <use href="#flower" x="212" y="106"/>
+      <use href="#flower" x="94" y="188"/>
+      <use href="#bud" x="250" y="146" transform="rotate(30 250 146)"/>
+      <use href="#bud" x="186" y="140" transform="rotate(-20 186 140)"/>
+    </svg>
