@@ -55,6 +55,8 @@
   .hint { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
   .hint b { color: var(--ink); font-weight: 500; }
 
+  .verse5 { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1.25; margin: 0 0 8px; color: var(--moon); cursor: pointer; min-height: 1.25em; overflow-wrap: anywhere; }
+  .verse5:hover { color: var(--ink); }
   .ctrl { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; margin: 0 0 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
   .ctrl label { display: flex; align-items: center; gap: 10px; }
   .ctrl b { color: var(--ink); font-weight: 700; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
@@ -117,7 +119,7 @@
 <main>
   <header>
     <div>
-      <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 2.5</p>
+      <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 3.5</p>
       <h1>Tři kumpáni</h1>
       <p class="poem" id="poem"></p>
     </div>
@@ -164,13 +166,23 @@
 
   <section>
     <h2>Kam se model dívá</h2>
-    <p class="hint">Když jazykový model čte token, rozdělí svou pozornost mezi něj a všechno před ním. Model má <b>24 vrstev</b> a v každé <b>14 hlav</b>. Vyber vrstvu, ťukni na token a pod ním jsou všechny hlavy té vrstvy: řádek je token, který čte, sloupec token, na který se dívá. Nad úhlopříčkou je tma, do budoucnosti se dívat nesmí.</p>
+    <p class="hint">Když jazykový model čte token, rozdělí svou pozornost mezi něj a všechno před ním. Model má 24 vrstev, ale jen každá čtvrtá se dívá takhle, po tokenech; ostatní si drží jen stlačenou paměť a matici nemají. Těch <b>6 vrstev</b> má po <b>8 hlavách</b>. Vyber vrstvu, ťukni na token a pod ním jsou všechny hlavy té vrstvy: řádek je token, který čte, sloupec token, na který se dívá. Nad úhlopříčkou je tma, do budoucnosti se dívat nesmí.</p>
     <div class="ctrl">
-      <label>vrstva <input type="range" id="attL" min="1" max="24" value="1"><b id="attLv">1</b></label>
+      <label>vrstva <input type="range" id="attL" min="1" max="6" value="1"><b id="attLv">4</b></label>
     </div>
     <div class="rows" id="attRows"></div>
     <p class="cap" id="attCap"></p>
     <div class="heads" id="heads"></div>
+  </section>
+
+  <section>
+    <h2>Pátý verš</h2>
+    <p class="hint">Model nezná pokračování, jen pravděpodobnosti dalšího tokenu. <b>Teplota</b> říká, jak moc smí sáhnout i po těch méně pravděpodobných: při nule bere vždycky ten nejjistější, při vysoké tahá skoro naslepo. Ťukni na verš pro další pokus.</p>
+    <div class="ctrl">
+      <label>teplota <input type="range" id="tmp" min="0" max="6" value="2"><b id="tmpv">0.6</b></label>
+    </div>
+    <p class="verse5" id="verse5"></p>
+    <p class="cap" id="tmpcap"></p>
   </section>
 
   <section>
@@ -200,7 +212,7 @@
   </section>
 
   <footer>
-    <p>Model Qwen 2.5 0.5B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
+    <p>Model Qwen 3.5 0.8B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
     <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
   </footer>
 </main>
@@ -211,7 +223,7 @@ window.QWEN = __QWEN__;
 <script>
 (function () {
   var Q = window.QWEN;
-  var T = Q.tokeny, N = T.length, L = Q.vrstvy, H = Q.hlavy;
+  var T = Q.tokeny, N = T.length, AV = Q.att_vrstvy, H = Q.hlavy;
   function show(s) { return s === "\n" ? "↵" : s.replace(/ /g, "▁"); }
   function esc(s) { return s.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
 
@@ -226,7 +238,7 @@ window.QWEN = __QWEN__;
 
   var sel = N - 1, head = 0;
   var attL = document.getElementById("attL"), attLv = document.getElementById("attLv");
-  attL.max = L;
+  attL.max = AV.length;
 
   var attRows = document.getElementById("attRows"), btns = [];
   rowsOf.forEach(function (idx) {
@@ -252,7 +264,7 @@ window.QWEN = __QWEN__;
 
   var attCap = document.getElementById("attCap");
   function draw() {
-    var l = attL.value - 1; attLv.textContent = l + 1;
+    var l = attL.value - 1; attLv.textContent = AV[l];
     var row = [], max = 0;
     for (var j = 0; j <= sel; j++) { row[j] = att(l, head, sel, j); if (row[j] > max) max = row[j]; }
     btns.forEach(function (b, j) {
@@ -277,11 +289,26 @@ window.QWEN = __QWEN__;
     var top = [];
     for (j = 0; j <= sel; j++) top.push([row[j], j]);
     top.sort(function (a, b) { return b[0] - a[0]; });
-    attCap.innerHTML = 'Token <b>' + esc(show(T[sel].s)) + '</b>, vrstva ' + (l + 1) + ', hlava ' + (head + 1) + ': dívá se nejvíc na ' +
+    attCap.innerHTML = 'Token <b>' + esc(show(T[sel].s)) + '</b>, vrstva ' + AV[l] + ', hlava ' + (head + 1) + ': dívá se nejvíc na ' +
       top.slice(0, 4).map(function (p) { return '<b>' + esc(show(T[p[1]].s)) + '</b> <i>' + Math.round(p[0] * 100) + '%</i>'; }).join(', ') + '.';
   }
   attL.addEventListener("input", draw);
 
   draw();
+
+  var P = Q.paty_vers, tmp = document.getElementById("tmp"), tmpv = document.getElementById("tmpv");
+  var v5 = document.getElementById("verse5"), tmpcap = document.getElementById("tmpcap"), pokus = 0;
+  tmp.max = P.teploty.length - 1;
+  function drawTmp() {
+    var z = P.teploty[tmp.value], vs = z.verse;
+    tmpv.textContent = z.t.toFixed(1);
+    v5.textContent = vs[pokus % vs.length] || "…";
+    var top = P.kandidati.map(function (k, i) { return [z.p[i], k.s]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3);
+    tmpcap.innerHTML = 'První token: ' + top.map(function (k) { return '<b>' + esc(show(k[1])) + '</b> <i>' + Math.round(k[0] * 100) + '%</i>'; }).join(', ') +
+      (z.t === 0 ? '. Bez náhody, pořád stejný verš.' : '. Pokus ' + (pokus % vs.length + 1) + ' z ' + vs.length + '.');
+  }
+  tmp.addEventListener("input", function () { pokus = 0; drawTmp(); });
+  v5.addEventListener("click", function () { pokus++; drawTmp(); });
+  drawTmp();
 })();
 </script>

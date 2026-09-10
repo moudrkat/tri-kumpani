@@ -1,23 +1,29 @@
-"""Qwen 2.5 0.5B přečte čtyři verše a my si zapíšeme, co se s tokeny děje uvnitř.
+"""Qwen 3.5 0.8B přečte čtyři verše a my si zapíšeme, co se s tokeny děje uvnitř.
+
+Qwen 3.5 je hybrid: z 24 vrstev má jen každá čtvrtá (4, 8, 12, 16, 20, 24) klasickou
+attention s maticí N × N, ostatní jsou lineární (Gated DeltaNet) a žádnou matici nemají.
+Zapisujeme tedy jen těch šest.
 
 Výstup model/qwen.json:
   tokeny          id + text každého tokenu
-  attention       24 vrstev × 14 hlav × N × N, kvantované na bajt (0..255 = 0..1), base64
-  logit_lens      pro každou vrstvu a pozici top-3 tokeny, které by model hádal jako další
-  pokracovani     jak by model pokračoval (pátý verš), greedy a jeden vzorek
+  att_vrstvy      čísla vrstev (od 1), které mají plnou attention
+  attention       len(att_vrstvy) × 8 hlav × N × N, kvantované na bajt (0..255 = 0..1), base64
+  logit_lens      pro každou z 24 vrstev a pozici top-3 tokeny, které by model hádal jako další
+  paty_vers       jak by model pokračoval: pro každou teplotu šest vzorků pátého verše
+                  a přesné pravděpodobnosti 40 nejnadějnějších prvních tokenů při té teplotě
+                  (teplota 0 = greedy, jeden verš)
 
     uv sync --extra model
-    uv run python model/precompute.py
+    uv run python model/precompute.py      # na GPU, když je; na CPU to trvá pár minut
 """
 import base64
 import json
 from pathlib import Path
 
-import numpy as np
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-MODEL = "Qwen/Qwen2.5-0.5B"
+MODEL = "Qwen/Qwen3.5-0.8B-Base"
 KAM = Path(__file__).resolve().parent / "qwen.json"
 BASNE = Path(__file__).resolve().parent.parent / "basne" / "tri_kumpani.txt"
 
@@ -25,10 +31,12 @@ verse = [v.rstrip(",") for v in BASNE.read_text(encoding="utf-8").split("\n\n")[
 text = "\n".join(verse)
 
 tok = AutoTokenizer.from_pretrained(MODEL)
-model = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32, attn_implementation="eager")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float32, attn_implementation="eager").to(device)
 model.eval()
+print("model:", MODEL, "na", device)
 
-ids = tok(text, return_tensors="pt").input_ids
+ids = tok(text, return_tensors="pt").input_ids.to(device)
 with torch.no_grad():
     out = model(ids, output_attentions=True, output_hidden_states=True)
 
@@ -36,11 +44,14 @@ tokeny = [{"id": int(i), "s": tok.decode([int(i)])} for i in ids[0]]
 n = len(tokeny)
 print("tokenů:", n)
 
-# attention: (vrstva, hlava, i, j) -> uint8
-att = torch.stack([a[0] for a in out.attentions])          # L × H × N × N
-L, H = att.shape[:2]
-att_u8 = (att.clamp(0, 1) * 255).round().to(torch.uint8).numpy()
-print("attention:", att_u8.shape)
+# attention: (vrstva, hlava, i, j) -> uint8; jen vrstvy, které ji mají
+typy = model.config.layer_types
+att_vrstvy = [i + 1 for i, t in enumerate(typy) if t == "full_attention"]
+att = torch.stack([a[0] for a in out.attentions if a is not None])   # L_att × H × N × N
+assert att.shape[0] == len(att_vrstvy), (att.shape, att_vrstvy)
+H = att.shape[1]
+att_u8 = (att.clamp(0, 1) * 255).round().to(torch.uint8).cpu().numpy()
+print("attention:", att_u8.shape, "vrstvy", att_vrstvy)
 
 # logit lens: finální norma + lm_head na hidden state každé vrstvy
 norm, head = model.model.norm, model.lm_head
@@ -53,24 +64,36 @@ for l, h in enumerate(out.hidden_states[1:]):               # hidden_states[0] j
     lens.append([[{"s": tok.decode([int(t)]), "p": round(float(pp), 3)} for pp, t in zip(top.values[i], top.indices[i])]
                  for i in range(n)])
 
-# pokračování: pátý verš
-prompt = tok(text + "\n", return_tensors="pt").input_ids
+# pátý verš: čistá teplota, bez top-p a top-k, ať posuvník v appce říká pravdu
+TEPLOTY = [0.3, 0.6, 0.8, 1.0, 1.3, 1.7]
+prompt = tok(text + "\n", return_tensors="pt").input_ids.to(device)
+cisty = dict(top_p=1.0, top_k=0, repetition_penalty=1.0, max_new_tokens=24)
+
+def radek(seq):
+    return tok.decode(seq[prompt.shape[1]:], skip_special_tokens=True).split("\n")[0].strip()
+
 with torch.no_grad():
-    g = model.generate(prompt, max_new_tokens=24, do_sample=False)
-    torch.manual_seed(7)
-    s = model.generate(prompt, max_new_tokens=24, do_sample=True, temperature=0.8, top_p=0.9)
-greedy = tok.decode(g[0][prompt.shape[1]:]).split("\n")[0]
-sampled = tok.decode(s[0][prompt.shape[1]:]).split("\n")[0]
-print("greedy:", greedy)
-print("vzorek:", sampled)
+    logity = model(prompt).logits[0, -1].float()
+    top = torch.topk(logity, 40)
+    kandidati = [{"s": tok.decode([int(i)]), "logit": round(float(v), 3)} for v, i in zip(top.values, top.indices)]
+    g = model.generate(prompt, do_sample=False, **cisty)
+    paty = [{"t": 0, "verse": [radek(g[0])],
+             "p": [1.0 if int(i) == int(top.indices[0]) else 0.0 for i in top.indices]}]
+    for t in TEPLOTY:
+        torch.manual_seed(7)
+        s = model.generate(prompt, do_sample=True, temperature=t, num_return_sequences=6, **cisty)
+        p = torch.softmax(logity / t, dim=-1)
+        paty.append({"t": t, "verse": [radek(x) for x in s], "p": [round(float(p[i]), 4) for i in top.indices]})
+for z in paty:
+    print(f"teplota {z['t']}: {z['verse']}")
 
 KAM.write_text(json.dumps({
     "model": MODEL,
     "verse": verse,
     "tokeny": tokeny,
-    "vrstvy": L, "hlavy": H,
+    "vrstvy": len(typy), "att_vrstvy": att_vrstvy, "hlavy": H,
     "attention": base64.b64encode(att_u8.tobytes()).decode(),
     "logit_lens": lens,
-    "pokracovani": {"greedy": greedy, "vzorek": sampled},
+    "paty_vers": {"kandidati": kandidati, "teploty": paty},
 }, ensure_ascii=False), encoding="utf-8")
 print("zapsáno", KAM, KAM.stat().st_size // 1024, "kB")

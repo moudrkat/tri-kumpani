@@ -9,7 +9,7 @@ dependencies = ["numpy>=2.0"]
 dev = ["pytest>=8"]
 srovnani = ["tiktoken>=0.8", "tokenizers>=0.20"]
 tisk = ["cairosvg>=2.7", "tokenizers>=0.20"]
-model = ["torch>=2.4", "transformers>=4.45", "tokenizers>=0.20"]
+model = ["torch>=2.4", "transformers>=4.57", "tokenizers>=0.20"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

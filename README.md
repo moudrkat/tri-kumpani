@@ -34,7 +34,7 @@ The sleeve carries the address in plain text.
 
 ```bash
 uv sync --extra model --extra tisk
-uv run python model/precompute.py   # Qwen 2.5 0.5B reads the poem: attention, logit lens, next verse
+uv run python model/precompute.py   # Qwen 3.5 0.8B reads the poem: attention, logit lens, next verse
 uv run python app/build.py          # -> app/index.html, self-contained
 uv run python bunda_cisla.py        # print template for the jacket (numbers large, words small)
 uv run python bunda.py              # alternative: colored token boxes
