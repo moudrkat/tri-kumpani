@@ -48,6 +48,13 @@
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
+  .lang { position: absolute; top: 0; right: 0; margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+  .lang button { all: unset; cursor: pointer; color: var(--dim); }
+  .lang button.on { color: var(--ink); }
+  .lang button:hover { color: var(--muted); }
+  header > div { position: relative; padding-top: 4px; }
+  .poem-en { color: var(--muted); font-size: 14px; margin: 12px 0 0; max-width: 48ch; }
+  .poem-en:empty { display: none; }
   .poem { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35; margin: 0; color: var(--moon); }
 
   section { margin: 0 0 56px; }
@@ -132,9 +139,11 @@
 <main>
   <header>
     <div>
-      <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 3.5</p>
+      <p class="lang" id="lang"><button type="button" data-l="cs">česky</button> · <button type="button" data-l="en">english</button></p>
+      <p class="eyebrow" data-t="eyebrow1"></p>
       <h1>Tři kumpáni</h1>
       <p class="poem" id="poem"></p>
+      <p class="poem-en" data-t="poemEn"></p>
     </div>
     <svg viewBox="0 0 320 240" role="img" aria-label="Měsíc nad větví jasmínu">
       <defs>
@@ -178,11 +187,11 @@
   </header>
 
   <section>
-    <h2>Měsíc</h2>
-    <p class="zh-line">举杯邀明月<i>zvedám pohár a zvu měsíc</i></p>
-    <p class="hint">Když model čte token, zvedá pohár ke všem tokenům před ním a každému nalije jinak. Tomu se říká attention. Model má 24 vrstev, ale jen každá čtvrtá zve takhle, token po tokenu; těch <b>6 vrstev</b> má po <b>8 hlavách</b>. Vyber vrstvu, ťukni na token: řádek je ten, kdo zve, sloupec ten, koho. Nad úhlopříčkou je tma, do budoucnosti se zvát nesmí.</p>
+    <h2 data-t="h2moon"></h2>
+    <p class="zh-line">举杯邀明月<i data-t="zhMoon"></i></p>
+    <p class="hint" data-t="hintMoon"></p>
     <div class="ctrl">
-      <label>vrstva <input type="range" id="attL" min="1" max="6" value="1"><b id="attLv">4</b></label>
+      <label><span data-t="layer"></span> <input type="range" id="attL" min="1" max="6" value="1"><b id="attLv">4</b></label>
     </div>
     <div class="rows" id="attRows"></div>
     <p class="cap" id="attCap"></p>
@@ -190,20 +199,20 @@
   </section>
 
   <section>
-    <p class="eyebrow">Li Po · 月下独酌 · kolem roku 744</p>
-    <h2>Stín</h2>
-    <p class="zh-line">我舞影零乱<i>tančím, a stín se rozpadá</i></p>
-    <p class="hint">Celá báseň třikrát: originál, doslovný anglický překlad a Mathesiovi Tři kumpáni, kteří z ní vyrostli. Čtrnáct veršů, žádný jasmín, ale měsíc a stín ano. Pod každou z nich model dopisuje verš, který tam Li Po nenapsal. Model je stín: jde za textem, ale nepije. Zná jen pravděpodobnosti dalšího tokenu, a <b>teplota</b> je jeho víno. Střízlivý bere vždycky ten nejjistější token a opakuje, co už četl. Opilý sahá i po nepravděpodobných, až se rozpadne, a padají z něj čínské znaky. Není divu, stín je taky z Číny: Qwen vyrostl v Alibabě v Chang-čou, dvanáct set let po Li Poovi. Ťukni na verš stínu, zkusí to znovu.</p>
+    <p class="eyebrow" data-t="eyebrow2"></p>
+    <h2 data-t="h2shadow"></h2>
+    <p class="zh-line">我舞影零乱<i data-t="zhShadow"></i></p>
+    <p class="hint" data-t="hintShadow"></p>
     <div class="ctrl">
       <label><span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
     </div>
     <div class="tri-wrap" id="triWrap"><div class="tri" id="tri"></div></div>
-    <p class="note"><b>无情游</b> je doslova „bezcitné putování": přátelství, které nestojí na citech ani na lidech, jako to s měsícem. <b>云汉</b>, „oblačná řeka", je Mléčná dráha.</p>
+    <p class="note" data-t="note"></p>
   </section>
 
   <footer>
-    <p>永结无情游, píše Li Po na konci: pojďme uzavřít přátelství bez citu. Jestli Qwen 3.5 0.8B něco cítí, je otázka, na kterou tahle stránka neumí a nechce odpovídat. Báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
-    <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
+    <p data-t="foot1"></p>
+    <p data-t="foot2"></p>
   </footer>
 </main>
 
@@ -213,6 +222,52 @@ window.QWEN = {"model": "Qwen/Qwen3.5-0.8B-Base", "verse": ["Jasmínu loubí. Se
 <script>
 (function () {
   var Q = window.QWEN;
+  var TXT = {
+    cs: {
+      eyebrow1: "Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 3.5",
+      poemEn: "",
+      h2moon: "Měsíc", zhMoon: "zvedám pohár a zvu měsíc",
+      hintMoon: "Když model čte token, zvedá pohár ke všem tokenům před ním a každému nalije jinak. Tomu se říká attention. Model má 24 vrstev, ale jen každá čtvrtá zve takhle, token po tokenu; těch <b>6 vrstev</b> má po <b>8 hlavách</b>. Vyber vrstvu, ťukni na token: řádek je ten, kdo zve, sloupec ten, koho. Nad úhlopříčkou je tma, do budoucnosti se zvát nesmí.",
+      layer: "vrstva", attCap: ["Token ", ", vrstva ", ", hlava ", ": dívá se nejvíc na "],
+      eyebrow2: "Li Po · 月下独酌 · kolem roku 744",
+      h2shadow: "Stín", zhShadow: "tančím, a stín se rozpadá",
+      hintShadow: "Celá báseň třikrát: originál, doslovný anglický překlad a Mathesiovi Tři kumpáni, kteří z ní vyrostli. Čtrnáct veršů, žádný jasmín, ale měsíc a stín ano. Pod každou z nich model dopisuje verš, který tam Li Po nenapsal. Model je stín: jde za textem, ale nepije. Zná jen pravděpodobnosti dalšího tokenu, a <b>teplota</b> je jeho víno. Střízlivý bere vždycky ten nejjistější token a opakuje, co už četl. Opilý sahá i po nepravděpodobných, až se rozpadne, a padají z něj čínské znaky. Není divu, stín je taky z Číny: Qwen vyrostl v Alibabě v Chang-čou, dvanáct set let po Li Poovi. Ťukni na verš stínu, zkusí to znovu.",
+      kdo: { zh: "Li Po", en: "doslovný překlad", cs: "Bohumil Mathesius" }, shadow: "stín", firstTok: "první token ",
+      note: "<b>无情游</b> je doslova „bezcitné putování\": přátelství, které nestojí na citech ani na lidech, jako to s měsícem. <b>云汉</b>, „oblačná řeka\", je Mléčná dráha.",
+      foot1: "永结无情游, píše Li Po na konci: pojďme uzavřít přátelství bez citu. Jestli Qwen 3.5 0.8B něco cítí, je otázka, na kterou tahle stránka neumí a nechce odpovídat. Báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.",
+      foot2: "Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano."
+    },
+    en: {
+      eyebrow1: "Li Po · Czech by Bohumil Mathesius · read by Qwen 3.5",
+      poemEn: "Word for word: A jasmine bower. I sit with wine; the good hour calls for good company, and I am alone. Then suddenly, over the hillside, the round moon bows to me.",
+      h2moon: "Moon", zhMoon: "I raise my cup and invite the moon",
+      hintMoon: "When the model reads a token, it raises its cup to every token before it and pours each a different measure. This is called attention. The model has 24 layers, but only every fourth invites like this, token by token; those <b>6 layers</b> have <b>8 heads</b> each. Pick a layer, tap a token: the row is the one inviting, the column the one invited. Above the diagonal it is dark; the future may not be invited.",
+      layer: "layer", attCap: ["Token ", ", layer ", ", head ", ": looks mostly at "],
+      eyebrow2: "Li Po · 月下独酌 · around 744",
+      h2shadow: "Shadow", zhShadow: "I dance, and the shadow tumbles apart",
+      hintShadow: "The whole poem three times: the original, a literal English rendering, and Mathesius's Czech Three Companions that grew out of it. Fourteen lines, no jasmine, but moon and shadow, yes. Under each, the model writes the line Li Po never wrote. The model is the shadow: it follows the text but does not drink. It knows only the probabilities of the next token, and <b>temperature</b> is its wine. Sober, it always takes the most likely token and repeats what it has read. Drunk, it reaches for the unlikely ones until it falls apart and Chinese characters tumble out. No wonder, the shadow is from China too: Qwen grew up at Alibaba in Hangzhou, twelve hundred years after Li Po. Tap the shadow's line and it tries again.",
+      kdo: { zh: "Li Po", en: "literal rendering", cs: "Bohumil Mathesius" }, shadow: "shadow", firstTok: "first token ",
+      note: "<b>无情游</b> is literally a “feelingless wandering”: a friendship that rests neither on feelings nor on people, like the one with the moon. <b>云汉</b>, the “cloud river”, is the Milky Way.",
+      foot1: "永结无情游, Li Po writes at the end: let us bind a friendship past all feeling. Whether Qwen 3.5 0.8B feels anything is a question this page cannot and will not answer. It read the poem once and its notes are part of the page. Nothing is sent anywhere. The English rendering of the original is our own and literal.",
+      foot2: "Li Po wrote 月下独酌 around 744. Bohumil Mathesius rendered it in Czech in Zpěvy staré Číny (Songs of Old China), 1939. There is no jasmine and no bower in the original, but the shadow and the moon are there."
+    }
+  };
+  var lang = "cs";
+  try { lang = localStorage.getItem("lang") || (/^(cs|sk)/.test(navigator.language || "") ? "cs" : "en"); } catch (e) {}
+  if (!TXT[lang]) lang = "cs";
+  var langEl = document.getElementById("lang"), kdoEl = {}, stinLbl = [];
+  function setLang(l) {
+    lang = l; var t = TXT[l];
+    try { localStorage.setItem("lang", l); } catch (e) {}
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.innerHTML = t[e.getAttribute("data-t")]; });
+    langEl.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-l") === l); });
+    for (var k in kdoEl) kdoEl[k].textContent = t.kdo[k];
+    stinLbl.forEach(function (e) { e.textContent = t.shadow; });
+    if (window.__draw) { window.__draw(); window.__drawTmp(); }
+  }
+  langEl.addEventListener("click", function (ev) { var b = ev.target.closest("button"); if (b) setLang(b.getAttribute("data-l")); });
+  setLang(lang);
   var T = Q.tokeny, N = T.length, AV = Q.att_vrstvy, H = Q.hlavy;
   function show(s) { return s === "\n" ? "↵" : s.replace(/ /g, "▁"); }
   function esc(s) { return s.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
@@ -279,27 +334,28 @@ window.QWEN = {"model": "Qwen/Qwen3.5-0.8B-Base", "verse": ["Jasmínu loubí. Se
     var top = [];
     for (j = 0; j <= sel; j++) top.push([row[j], j]);
     top.sort(function (a, b) { return b[0] - a[0]; });
-    attCap.innerHTML = 'Token <b>' + esc(show(T[sel].s)) + '</b>, vrstva ' + AV[l] + ', hlava ' + (head + 1) + ': dívá se nejvíc na ' +
+    var c = TXT[lang].attCap;
+    attCap.innerHTML = c[0] + '<b>' + esc(show(T[sel].s)) + '</b>' + c[1] + AV[l] + c[2] + (head + 1) + c[3] +
       top.slice(0, 4).map(function (p) { return '<b>' + esc(show(T[p[1]].s)) + '</b> <i>' + Math.round(p[0] * 100) + '%</i>'; }).join(', ') + '.';
   }
   attL.addEventListener("input", draw);
-
+  window.__draw = draw;
   draw();
 
   var D = Q.dalsi_vers, tmp = document.getElementById("tmp"), tmpv = document.getElementById("tmpv"), tri = document.getElementById("tri");
-  var JAZ = [["zh", "Li Po", "zh"], ["en", "doslovný překlad", "v"], ["cs", "Bohumil Mathesius", "v"]];
+  var JAZ = [["zh", "zh"], ["en", "v"], ["cs", "v"]];
   var pokus = {}, stinEl = {}, capEl = {};
   tmp.max = D.cs.teploty.length - 1;
   JAZ.forEach(function (j) {
     var k = j[0], col = document.createElement("div"); col.className = "sl"; pokus[k] = 0;
-    var kdo = document.createElement("p"); kdo.className = "kdo"; kdo.textContent = j[1]; col.appendChild(kdo);
+    var kdo = document.createElement("p"); kdo.className = "kdo"; kdo.textContent = TXT[lang].kdo[k]; col.appendChild(kdo); kdoEl[k] = kdo;
     D[k].radky.forEach(function (r) {
       var e = document.createElement("p");
-      if (r === "") e.className = "gap"; else { e.className = j[2]; e.textContent = r; }
+      if (r === "") e.className = "gap"; else { e.className = j[1]; e.textContent = r; }
       col.appendChild(e);
     });
-    var l = document.createElement("p"); l.className = "kdo stin-l"; l.textContent = "stín"; col.appendChild(l);
-    var st = document.createElement("p"); st.className = j[2] + " stin";
+    var l = document.createElement("p"); l.className = "kdo stin-l"; l.textContent = TXT[lang].shadow; col.appendChild(l); stinLbl.push(l);
+    var st = document.createElement("p"); st.className = j[1] + " stin";
     st.addEventListener("click", function () { pokus[k]++; drawTmp(); });
     col.appendChild(st); stinEl[k] = st;
     var c = document.createElement("p"); c.className = "cap"; col.appendChild(c); capEl[k] = c;
@@ -312,11 +368,12 @@ window.QWEN = {"model": "Qwen/Qwen3.5-0.8B-Base", "verse": ["Jasmínu loubí. Se
       var k = j[0], d = D[k], z = d.teploty[i], vs = z.verse;
       stinEl[k].textContent = vs[pokus[k] % vs.length] || "…";
       var top = d.kandidati.map(function (c, n) { return [z.p[n], c.s]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3);
-      capEl[k].innerHTML = 'první token ' + top.map(function (c) { return '<b>' + esc(show(c[1])) + '</b> <i>' + Math.round(c[0] * 100) + '%</i>'; }).join(', ') +
+      capEl[k].innerHTML = TXT[lang].firstTok + top.map(function (c) { return '<b>' + esc(show(c[1])) + '</b> <i>' + Math.round(c[0] * 100) + '%</i>'; }).join(', ') +
         (z.t === 0 ? '' : ' · ' + (pokus[k] % vs.length + 1) + '/' + vs.length);
     });
   }
   tmp.addEventListener("input", function () { JAZ.forEach(function (j) { pokus[j[0]] = 0; }); drawTmp(); });
+  window.__drawTmp = drawTmp;
   drawTmp();
 
   var triWrap = document.getElementById("triWrap");
