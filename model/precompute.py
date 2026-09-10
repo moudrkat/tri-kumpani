@@ -9,7 +9,7 @@ Výstup model/qwen.json:
   att_vrstvy      čísla vrstev (od 1), které mají plnou attention
   attention       len(att_vrstvy) × 8 hlav × N × N, kvantované na bajt (0..255 = 0..1), base64
   logit_lens      pro každou z 24 vrstev a pozici top-3 tokeny, které by model hádal jako další
-  paty_vers       jak by model pokračoval: pro každou teplotu šest vzorků pátého verše
+  paty_vers       skutečný pátý verš (basnik) a jak by pokračoval model: pro každou teplotu šest vzorků pátého verše
                   a přesné pravděpodobnosti 40 nejnadějnějších prvních tokenů při té teplotě
                   (teplota 0 = greedy, jeden verš)
 
@@ -27,7 +27,9 @@ MODEL = "Qwen/Qwen3.5-0.8B-Base"
 KAM = Path(__file__).resolve().parent / "qwen.json"
 BASNE = Path(__file__).resolve().parent.parent / "basne" / "tri_kumpani.txt"
 
-verse = [v.rstrip(",") for v in BASNE.read_text(encoding="utf-8").split("\n\n")[0].splitlines()[:4]]
+sloka = BASNE.read_text(encoding="utf-8").split("\n\n")[0].splitlines()
+verse = [v.rstrip(",") for v in sloka[:4]]
+basnik = sloka[4]                                            # co po čtvrtém verši napsal Mathesius
 text = "\n".join(verse)
 
 tok = AutoTokenizer.from_pretrained(MODEL)
@@ -94,6 +96,6 @@ KAM.write_text(json.dumps({
     "vrstvy": len(typy), "att_vrstvy": att_vrstvy, "hlavy": H,
     "attention": base64.b64encode(att_u8.tobytes()).decode(),
     "logit_lens": lens,
-    "paty_vers": {"kandidati": kandidati, "teploty": paty},
+    "paty_vers": {"basnik": basnik, "kandidati": kandidati, "teploty": paty},
 }, ensure_ascii=False), encoding="utf-8")
 print("zapsáno", KAM, KAM.stat().st_size // 1024, "kB")

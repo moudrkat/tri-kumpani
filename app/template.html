@@ -55,8 +55,13 @@
   .hint { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
   .hint b { color: var(--ink); font-weight: 500; }
 
-  .verse5 { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1.25; margin: 0 0 8px; color: var(--moon); cursor: pointer; min-height: 1.25em; overflow-wrap: anywhere; }
-  .verse5:hover { color: var(--ink); }
+  .zh-line { font-family: var(--cjk); font-size: 15px; color: var(--muted); letter-spacing: 0.1em; margin: 0 0 10px; }
+  .zh-line i { font-family: var(--serif); font-style: italic; font-size: 17px; letter-spacing: 0; margin-left: 10px; color: var(--muted); }
+  .kdo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin: 16px 0 2px; }
+  .verse5 { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1.25; margin: 0; color: var(--ink); cursor: pointer; min-height: 1.25em; overflow-wrap: anywhere; text-shadow: 0 0 18px rgba(242,239,233,0.12); }
+  .verse5:hover { color: var(--moon); }
+  .basnik { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35; margin: 0; color: var(--moon); }
+  .ctrl .cjk { font-family: var(--cjk); font-size: 16px; color: var(--muted); }
   .ctrl { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; margin: 0 0 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
   .ctrl label { display: flex; align-items: center; gap: 10px; }
   .ctrl b { color: var(--ink); font-weight: 700; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
@@ -165,8 +170,9 @@
   </header>
 
   <section>
-    <h2>Kam se model dívá</h2>
-    <p class="hint">Když jazykový model čte token, rozdělí svou pozornost mezi něj a všechno před ním. Model má 24 vrstev, ale jen každá čtvrtá se dívá takhle, po tokenech; ostatní si drží jen stlačenou paměť a matici nemají. Těch <b>6 vrstev</b> má po <b>8 hlavách</b>. Vyber vrstvu, ťukni na token a pod ním jsou všechny hlavy té vrstvy: řádek je token, který čte, sloupec token, na který se dívá. Nad úhlopříčkou je tma, do budoucnosti se dívat nesmí.</p>
+    <h2>Měsíc</h2>
+    <p class="zh-line">举杯邀明月<i>zvedám pohár a zvu měsíc</i></p>
+    <p class="hint">Když model čte token, zvedá pohár ke všem tokenům před ním a každému nalije jinak. Tomu se říká attention. Model má 24 vrstev, ale jen každá čtvrtá zve takhle, token po tokenu; těch <b>6 vrstev</b> má po <b>8 hlavách</b>. Vyber vrstvu, ťukni na token: řádek je ten, kdo zve, sloupec ten, koho. Nad úhlopříčkou je tma, do budoucnosti se zvát nesmí.</p>
     <div class="ctrl">
       <label>vrstva <input type="range" id="attL" min="1" max="6" value="1"><b id="attLv">4</b></label>
     </div>
@@ -176,13 +182,17 @@
   </section>
 
   <section>
-    <h2>Pátý verš</h2>
-    <p class="hint">Model nezná pokračování, jen pravděpodobnosti dalšího tokenu. <b>Teplota</b> říká, jak moc smí sáhnout i po těch méně pravděpodobných: při nule bere vždycky ten nejjistější, při vysoké tahá skoro naslepo. Ťukni na verš pro další pokus.</p>
+    <h2>Stín</h2>
+    <p class="zh-line">我舞影零乱<i>tančím, a stín se rozpadá</i></p>
+    <p class="hint">Model je stín: jde za textem, ale nepije. Pátý verš nezná, má jen pravděpodobnosti dalšího tokenu, a <b>teplota</b> je jeho víno. Střízlivý bere vždycky ten nejjistější token a opakuje se. Opilý sahá i po nepravděpodobných, až se rozpadne, a padají z něj čínské znaky, protože v nich vyrostl. Ťukni na verš, stín to zkusí znovu.</p>
     <div class="ctrl">
-      <label>teplota <input type="range" id="tmp" min="0" max="6" value="2"><b id="tmpv">0.6</b></label>
+      <label><span class="cjk">醒</span><input type="range" id="tmp" min="0" max="6" value="2"><span class="cjk">醉</span><b id="tmpv">0.6</b></label>
     </div>
+    <p class="kdo">stín</p>
     <p class="verse5" id="verse5"></p>
     <p class="cap" id="tmpcap"></p>
+    <p class="kdo">básník</p>
+    <p class="basnik" id="basnik"></p>
   </section>
 
   <section>
@@ -212,7 +222,7 @@
   </section>
 
   <footer>
-    <p>Model Qwen 3.5 0.8B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
+    <p>永结无情游, píše Li Po na konci: pojďme uzavřít přátelství bez citu. Qwen 3.5 0.8B nic necítí; báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá. Anglický překlad originálu je vlastní a doslovný.</p>
     <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
   </footer>
 </main>
@@ -305,10 +315,11 @@ window.QWEN = __QWEN__;
     v5.textContent = vs[pokus % vs.length] || "…";
     var top = P.kandidati.map(function (k, i) { return [z.p[i], k.s]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3);
     tmpcap.innerHTML = 'První token: ' + top.map(function (k) { return '<b>' + esc(show(k[1])) + '</b> <i>' + Math.round(k[0] * 100) + '%</i>'; }).join(', ') +
-      (z.t === 0 ? '. Bez náhody, pořád stejný verš.' : '. Pokus ' + (pokus % vs.length + 1) + ' z ' + vs.length + '.');
+      (z.t === 0 ? '. Střízlivý, bez náhody, pořád stejný verš.' : '. Pokus ' + (pokus % vs.length + 1) + ' z ' + vs.length + '.');
   }
   tmp.addEventListener("input", function () { pokus = 0; drawTmp(); });
   v5.addEventListener("click", function () { pokus++; drawTmp(); });
+  document.getElementById("basnik").textContent = Q.paty_vers.basnik;
   drawTmp();
 })();
 </script>
