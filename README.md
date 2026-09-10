@@ -12,7 +12,7 @@ a já jsem sám. Vtom náhle nad strání
 kulatý měsíc se mi uklání
 ```
 
-App: https://huggingface.co/spaces/Unt1l1f1nd/tri-kumpani
+App: https://huggingface.co/spaces/Unt1l1f1nd/tri-kumpani (the sleeve QR points to https://unt1l1f1nd-tri-kumpani.static.hf.space/)
 
 ## Run
 
@@ -30,5 +30,6 @@ uv run pytest
 - `app/` static app, one file, no network
 - `model/precompute.py` what the model wrote down while reading
 - `bunda*.py`, `rukav_qr.*` print templates for back and sleeve
+- `space/README.md` front matter for the Hugging Face Space; upload it with `app/index.html`
 - `lekce/` byte encoding, tokenizers, BPE from scratch, word2vec in numpy
 - `basne/` the poem, Czech and original
