@@ -8,11 +8,9 @@
     --ink: #f2efe9;
     --muted: #8f8b84;
     --dim: #5c5954;
-    --t0: #2f6f9f;
-    --t1: #b0552f;
-    --t2: #3e8a58;
-    --t3: #7b4f9d;
-    --hit: #7fc48f;
+    --moon: #f3ead2;
+    --look: #2f6f9f;
+    --query: #b0552f;
     --mono: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
     --serif: "Cormorant Garamond", "Georgia", serif;
     --sans: "IBM Plex Sans", system-ui, sans-serif;
@@ -27,8 +25,10 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 800px; margin: 0 auto; padding: 40px 20px 80px; }
+  main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
 
+  header { display: grid; grid-template-columns: 1fr 300px; gap: 20px 32px; align-items: center; margin: 0 0 40px; }
+  header svg { width: 100%; height: auto; display: block; }
   .eyebrow {
     font-family: var(--mono);
     font-size: 11px;
@@ -41,184 +41,131 @@
     font-family: var(--serif);
     font-style: italic;
     font-weight: 600;
-    font-size: 64px;
+    font-size: 68px;
     line-height: 1;
-    margin: 0 0 14px;
+    margin: 0 0 18px;
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
-  .lede { color: var(--muted); max-width: 60ch; margin: 0 0 44px; }
-  .lede b, .hint b { color: var(--ink); font-weight: 500; }
+  .poem { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35; margin: 0; color: var(--moon); }
 
   section { margin: 0 0 56px; }
-  h2 {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 28px;
-    margin: 0 0 6px;
-  }
-  .hint { color: var(--muted); margin: 0 0 16px; max-width: 62ch; }
+  h2 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 30px; margin: 0 0 6px; }
+  .hint { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
+  .hint b { color: var(--ink); font-weight: 500; }
 
-  .rows { display: flex; flex-direction: column; gap: 12px; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; margin: 0 0 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .ctrl label { display: flex; align-items: center; gap: 10px; }
+  .ctrl b { color: var(--ink); font-weight: 700; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
+  input[type=range] { accent-color: var(--query); width: 240px; }
+
+  .rows { display: flex; flex-direction: column; gap: 10px; }
   .row { display: flex; flex-wrap: wrap; gap: 6px; }
   .tok {
     font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+    white-space: pre;
     border: 0;
     border-radius: 7px;
-    padding: 7px 9px 5px;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-    cursor: pointer;
+    padding: 7px 9px;
     line-height: 1.15;
-    text-align: center;
-    min-width: 28px;
+    cursor: pointer;
+    color: var(--ink);
+    background: rgba(47, 111, 159, var(--a, 0));
     outline-offset: 2px;
     transition: transform 120ms ease;
-    background: var(--panel);
   }
   .tok:hover { transform: translateY(-1px); }
   .tok:focus-visible { outline: 2px solid var(--ink); }
-  .tok.on { box-shadow: 0 0 0 2px var(--ink); }
-  .tok .s { font-weight: 700; font-size: 15px; white-space: pre; }
-  .tok .n { font-size: 10px; opacity: 0.85; font-variant-numeric: tabular-nums; }
-  .tok.c0 { background: var(--t0); }
-  .tok.c1 { background: var(--t1); }
-  .tok.c2 { background: var(--t2); }
-  .tok.c3 { background: var(--t3); }
-  .tok.nl { color: var(--muted); }
-  .tok.bad { outline: 1px dashed var(--muted); }
-
-  /* attention: chipy bez barvy, sytost = pozornost */
-  .att .tok { color: var(--ink); background: rgba(47, 111, 159, var(--a, 0)); }
-  .att .tok .n { display: none; }
-  .att .tok.q { box-shadow: 0 0 0 2px var(--t1); }
-  .att .tok.future { opacity: 0.25; }
-  .att-grid { display: grid; grid-template-columns: 1fr 300px; gap: 22px; align-items: start; }
-  .ctrl { display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: center; margin: 0 0 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  .ctrl label { display: flex; align-items: center; gap: 10px; }
-  .ctrl b { color: var(--ink); font-weight: 700; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
-  input[type=range] { accent-color: var(--t1); width: 180px; }
-  select { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; font-family: var(--mono); font-size: 12px; }
-  canvas { display: block; width: 100%; height: auto; border-radius: 6px; background: var(--panel); image-rendering: pixelated; }
-  .cap { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 10px 0 0; line-height: 1.6; }
+  .tok.q { box-shadow: 0 0 0 2px var(--query); }
+  .tok.future { opacity: 0.22; }
+  .cap { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 12px 0 0; line-height: 1.6; }
   .cap b { color: var(--ink); font-weight: 400; }
-  .cap i { color: var(--t1); font-style: normal; }
+  .cap i { color: var(--query); font-style: normal; }
 
-  /* logit lens */
-  .lens .row { gap: 4px 10px; align-items: flex-end; }
-  .lens .cell { display: flex; flex-direction: column; align-items: center; font-family: var(--mono); min-width: 24px; }
-  .lens .cell .s { font-size: 14px; font-weight: 700; white-space: pre; padding: 4px 6px; border-radius: 5px; background: var(--panel); }
-  .lens .cell .g { font-size: 11px; color: var(--muted); white-space: pre; margin-top: 4px; max-width: 9ch; overflow: hidden; text-overflow: ellipsis; }
-  .lens .cell .g.hit { color: var(--hit); }
-  .lens .cell.on .s { box-shadow: 0 0 0 2px var(--ink); }
-  .top3 { margin: 16px 0 0; display: grid; grid-template-columns: repeat(3, auto); gap: 6px 18px; width: max-content; font-family: var(--mono); font-size: 13px; }
-  .top3 .p { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .top3 .w { white-space: pre; font-weight: 700; }
-  .top3 .bar { height: 8px; background: var(--t0); border-radius: 2px; align-self: center; }
+  .heads { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin: 28px 0 0; }
+  .head { background: none; border: 0; padding: 0; cursor: pointer; text-align: left; color: var(--muted); font-family: var(--mono); font-size: 11px; outline-offset: 3px; border-radius: 6px; }
+  .head:focus-visible { outline: 2px solid var(--ink); }
+  .head canvas { display: block; width: 100%; height: auto; border-radius: 5px; background: var(--panel); image-rendering: pixelated; box-shadow: 0 0 0 1px var(--line); }
+  .head.on canvas { box-shadow: 0 0 0 2px var(--ink); }
+  .head .l { display: flex; justify-content: space-between; gap: 6px; margin-top: 6px; line-height: 1.3; }
+  .head .l b { color: var(--ink); font-weight: 400; white-space: pre; overflow: hidden; text-overflow: ellipsis; max-width: 8ch; }
+  .head.on .l { color: var(--ink); }
 
-  /* pátý verš */
-  .verse5 { font-family: var(--serif); font-size: 30px; line-height: 1.25; margin: 0 0 6px; }
+  .verse5 { font-family: var(--serif); font-size: 32px; line-height: 1.25; margin: 0 0 6px; }
   .verse5 span { font-style: italic; }
   .verse5 small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .verse5 + .verse5 { margin-top: 18px; }
-
-  textarea {
-    width: 100%;
-    box-sizing: border-box;
-    background: var(--panel);
-    color: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-family: var(--serif);
-    font-size: 22px;
-    line-height: 1.35;
-    resize: vertical;
-    min-height: 92px;
-  }
-  textarea:focus { outline: 2px solid var(--t0); outline-offset: 1px; border-color: transparent; }
-  .stats { display: flex; flex-wrap: wrap; gap: 22px; margin: 12px 0 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .stats b { color: var(--ink); font-weight: 700; font-size: 15px; margin-right: 5px; }
-
-  .detail {
-    margin-top: 22px;
-    background: var(--panel);
-    border-left: 3px solid var(--t0);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 6px 16px;
-    font-size: 14px;
-  }
-  .detail[hidden] { display: none; }
-  .detail dt { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 3px; }
-  .detail dd { margin: 0; }
-  .detail .big { font-family: var(--mono); font-size: 22px; font-weight: 700; white-space: pre; }
-  .detail .hex { font-family: var(--mono); word-break: break-all; }
-  .detail .verse { font-family: var(--serif); font-style: italic; font-size: 18px; }
-  .detail .verse span { color: var(--muted); font-family: var(--mono); font-style: normal; font-size: 11px; margin-right: 8px; }
-
-  details summary { cursor: pointer; font-family: var(--serif); font-style: italic; font-size: 22px; list-style: none; }
-  details summary::before { content: "▸ "; color: var(--muted); font-family: var(--mono); font-size: 14px; }
-  details[open] summary::before { content: "▾ "; }
-  details .rows { margin-top: 18px; }
-  .stanza-gap { height: 14px; }
+  .verse5 + .verse5 { margin-top: 20px; }
 
   footer { border-top: 1px solid var(--line); padding-top: 18px; color: var(--dim); font-size: 13px; max-width: 64ch; }
   footer p { margin: 0 0 8px; }
-  .err { color: var(--t1); font-family: var(--mono); font-size: 13px; }
-  @media (max-width: 640px) {
-    h1 { font-size: 48px; }
-    .detail { grid-template-columns: 1fr; }
-    .att-grid { grid-template-columns: 1fr; }
+  @media (max-width: 700px) {
+    header { grid-template-columns: 1fr; }
+    header svg { max-width: 260px; }
+    h1 { font-size: 52px; }
+    .heads { grid-template-columns: repeat(4, 1fr); }
   }
   @media (prefers-reduced-motion: reduce) { .tok { transition: none; } }
 </style>
 
 <main>
-  <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 2.5 0.5B</p>
-  <h1>Tři kumpáni</h1>
-  <p class="lede">Na zádech bundy jsou čtyři verše tak, jak je vidí jazykový model. Každé políčko je jeden <b>token</b>, číslo pod ním je jeho místo ve slovníku o 151&thinsp;665 kusech. Malý model Qwen ty verše jednou opravdu přečetl a tady je zapsáno, co se s nimi dělo uvnitř: kam se v každé vrstvě díval a co si po každé vrstvě myslel, že přijde dál.</p>
+  <header>
+    <div>
+      <p class="eyebrow">Li Po · přebásnil Bohumil Mathesius · přečetl Qwen 2.5</p>
+      <h1>Tři kumpáni</h1>
+      <p class="poem" id="poem"></p>
+    </div>
+    <svg viewBox="0 0 320 240" role="img" aria-label="Měsíc nad větví jasmínu">
+      <defs>
+        <radialGradient id="moon" cx="38%" cy="34%" r="72%">
+          <stop offset="0" stop-color="#fffaf0"/>
+          <stop offset="0.7" stop-color="#efe4c6"/>
+          <stop offset="1" stop-color="#d3c6a3"/>
+        </radialGradient>
+        <g id="flower">
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(0)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(72)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(144)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(216)"/>
+          <ellipse rx="10" ry="4" fill="#f7f2e6" transform="rotate(288)"/>
+          <circle r="2.6" fill="#e0c56a"/>
+        </g>
+        <g id="bud">
+          <ellipse rx="3" ry="6" fill="#efe8d6"/>
+        </g>
+      </defs>
+      <circle cx="222" cy="78" r="60" fill="url(#moon)"/>
+      <circle cx="240" cy="58" r="9" fill="#cfc19c" opacity="0.45"/>
+      <circle cx="204" cy="94" r="6" fill="#cfc19c" opacity="0.4"/>
+      <circle cx="238" cy="104" r="4" fill="#cfc19c" opacity="0.4"/>
+      <circle cx="222" cy="78" r="66" fill="none" stroke="#f3ead2" stroke-opacity="0.12" stroke-width="10"/>
+      <path d="M6 232 C 60 206, 96 176, 150 146 C 184 128, 214 134, 250 150" stroke="#5a6a47" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M96 176 C 108 160, 122 152, 142 150" stroke="#5a6a47" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M186 138 C 190 122, 198 112, 212 106" stroke="#5a6a47" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="46" cy="202" rx="17" ry="6" fill="#4d6a3e" transform="rotate(-32 46 202)"/>
+      <ellipse cx="74" cy="198" rx="15" ry="5.5" fill="#436036" transform="rotate(20 74 198)"/>
+      <ellipse cx="116" cy="176" rx="17" ry="6" fill="#4d6a3e" transform="rotate(-38 116 176)"/>
+      <ellipse cx="132" cy="166" rx="14" ry="5" fill="#436036" transform="rotate(28 132 166)"/>
+      <ellipse cx="166" cy="152" rx="16" ry="5.5" fill="#4d6a3e" transform="rotate(-18 166 152)"/>
+      <ellipse cx="232" cy="152" rx="15" ry="5.5" fill="#436036" transform="rotate(34 232 152)"/>
+      <use href="#flower" x="142" y="150"/>
+      <use href="#flower" x="212" y="106"/>
+      <use href="#flower" x="94" y="188"/>
+      <use href="#bud" x="250" y="146" transform="rotate(30 250 146)"/>
+      <use href="#bud" x="186" y="140" transform="rotate(-20 186 140)"/>
+    </svg>
+  </header>
 
   <section>
-    <h2>Co je na bundě</h2>
-    <p class="hint">Ťukni na políčko. Vybraný token se pak drží ve všech oddílech níž.</p>
-    <div class="rows" id="jacket"></div>
-    <dl class="detail" id="detail" hidden></dl>
-  </section>
-
-  <section class="att">
     <h2>Kam se model dívá</h2>
-    <p class="hint">Attention. Když model zpracovává vybraný token, rozdělí svou pozornost mezi něj a všechno před ním. Sytost políčka je, kolik pozornosti tam padlo. Model má <b>24 vrstev</b> a v každé <b>14 hlav</b>, každá hlava se dívá po svém.</p>
+    <p class="hint">Když jazykový model čte token, rozdělí svou pozornost mezi něj a všechno před ním. Model má <b>24 vrstev</b> a v každé <b>14 hlav</b>. Vyber vrstvu, ťukni na token a pod ním jsou všechny hlavy té vrstvy: řádek je token, který čte, sloupec token, na který se dívá. Nad úhlopříčkou je tma, do budoucnosti se dívat nesmí.</p>
     <div class="ctrl">
       <label>vrstva <input type="range" id="attL" min="1" max="24" value="1"><b id="attLv">1</b></label>
-      <label>hlava <select id="attH"></select></label>
     </div>
-    <div class="att-grid">
-      <div>
-        <div class="rows" id="attRows"></div>
-        <p class="cap" id="attCap"></p>
-      </div>
-      <div>
-        <canvas id="heat" width="55" height="55"></canvas>
-        <p class="cap">Celá matice. Řádek je token, který čte, sloupec token, na který se dívá. Nad úhlopříčkou je tma: do budoucnosti se dívat nesmí.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="lens">
-    <h2>Co si model myslí po každé vrstvě</h2>
-    <p class="hint">Logit lens. Po každé vrstvě jde nahlédnout, co by model v tu chvíli hádal jako <b>další</b> token. Pod každým tokenem je ten tip. Zelený znamená, že se trefil do toho, co v básni opravdu následuje. V prvních vrstvách hádá naslepo, v posledních už zná verš.</p>
-    <div class="ctrl">
-      <label>vrstva <input type="range" id="lensL" min="1" max="24" value="24"><b id="lensLv">24</b></label>
-    </div>
-    <div class="rows" id="lensRows"></div>
-    <div class="top3" id="top3"></div>
+    <div class="rows" id="attRows"></div>
+    <p class="cap" id="attCap"></p>
+    <div class="heads" id="heads"></div>
   </section>
 
   <section>
@@ -229,251 +176,89 @@
     <p class="cap" id="verse5cap"></p>
   </section>
 
-  <section>
-    <h2>Napiš něco a bunda to přečte</h2>
-    <p class="hint">Stejný tokenizer rozseká cokoli, přímo tady v prohlížeči. Zjistíš, kolik z tvé věty už Li Po řekl.</p>
-    <textarea id="input" spellcheck="false" aria-label="Text k rozsekání">Dneska prší a já jsem sám.</textarea>
-    <div class="stats" id="stats"></div>
-    <div class="row" id="yours"></div>
-  </section>
-
-  <section>
-    <details>
-      <summary>Celá báseň v tokenech</summary>
-      <div class="rows" id="poem"></div>
-    </details>
-  </section>
-
   <footer>
-    <p>Tokenizer i model jsou Qwen 2.5 0.5B. Tokenizer běží tady v prohlížeči, model báseň přečetl jednou na počítači a jeho zápisky jsou součástí stránky. Nic se nikam neposílá.</p>
+    <p>Model Qwen 2.5 0.5B báseň jednou přečetl a jeho zápisky jsou součástí stránky. Nic se nikam neposílá.</p>
     <p>Báseň 月下独酌 napsal Li Po kolem roku 744. Bohumil Mathesius ji přebásnil ve Zpěvech staré Číny, 1939. Jasmín ani loubí v originále nejsou, ale stín a měsíc ano.</p>
-    <p id="err" class="err" hidden></p>
   </footer>
 </main>
 
 <script>
 window.QWEN = __QWEN__;
-window.MERGES = __MERGES__;
 </script>
 <script>
 (function () {
-  var POEM = "Jasmínu loubí. Sedím u vína,\nzve dobré druhy dobrá hodina –\na já jsem sám. Vtom náhle nad strání\nkulatý měsíc se mi uklání,\njá jemu. Se mnou v modrých nebes klín\nmůj kývá stín.\nSpolečnost poklonami nešetří –\ntak byl jsem sám, a teď jsme tři.\n\nChce měsíc pít. Jak mám ti podat číš?!\nStín zdvíhá pohár. Copak nevidíš,\nže dneska za vás za oba\npít musí moje hříšná nádoba?\n\nCo je to ale, chlapci rozmilí?\nJá piju – vy jste z toho opilí!\nMěsíc se motá, žvatlá ke stínu,\nten se snítkou zas tančí jasmínu,\njen já tu sedím klidně při víně,\njim připíjím a dobré hodině.\n\nTož loutnu sem a píseň se mnou noťte,\npak na kutě mě, chlapci, doprovoďte,\nvždyť do jedné se vejdou postele\nkumpáni světlé noci veselé.\n\nA zejtra navečer, až první hvězdy vzplanou,\nu vína v loubí, chlapci, nashledanou!";
   var Q = window.QWEN;
-  var err = document.getElementById("err");
-  var enc = new TextEncoder(), dec = new TextDecoder("utf-8");
-
-  /* ---------- tokenizer Qwen 2.5: byte-level BPE, slovník = 256 bajtů + merges v pořadí ---------- */
-  var byteSym = [], symByte = {}, idToSym = new Array(256), rank = new Map(), vocab = new Map();
-  (function () {
-    var bs = [];
-    for (var i = 33; i <= 126; i++) bs.push(i);
-    for (i = 161; i <= 172; i++) bs.push(i);
-    for (i = 174; i <= 255; i++) bs.push(i);
-    var cs = bs.slice(), n = 0;
-    for (i = 0; i < 256; i++) if (bs.indexOf(i) < 0) { bs.push(i); cs.push(256 + n); n++; }
-    /* id bajtového tokenu je jeho pořadí v tomhle seznamu, ne hodnota bajtu */
-    for (i = 0; i < bs.length; i++) {
-      var sym = String.fromCharCode(cs[i]);
-      byteSym[bs[i]] = sym; symByte[sym] = bs[i];
-      idToSym[i] = sym; vocab.set(sym, i);
-    }
-  })();
-  (function () {
-    var lines = window.MERGES.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      var sp = lines[i].indexOf(" ");
-      var a = lines[i].slice(0, sp), c = lines[i].slice(sp + 1);
-      rank.set(lines[i], i);
-      idToSym[256 + i] = a + c;
-      vocab.set(a + c, 256 + i);
-    }
-  })();
-  var PRE = /'[sS]|'[tT]|'[rR][eE]|'[vV][eE]|'[mM]|'[lL][lL]|'[dD]|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+/gu;
-  function bpe(syms) {
-    while (syms.length > 1) {
-      var best = -1, bestRank = Infinity;
-      for (var i = 0; i < syms.length - 1; i++) {
-        var r = rank.get(syms[i] + " " + syms[i + 1]);
-        if (r !== undefined && r < bestRank) { bestRank = r; best = i; }
-      }
-      if (best < 0) break;
-      var merged = syms[best] + syms[best + 1], out = [];
-      for (i = 0; i < syms.length; i++) {
-        if (i < syms.length - 1 && syms[i] === syms[best] && syms[i + 1] === syms[best + 1]) { out.push(merged); i++; }
-        else out.push(syms[i]);
-      }
-      syms = out;
-    }
-    return syms;
-  }
-  function encode(text) {
-    var ids = [], m, re = new RegExp(PRE.source, "gu");
-    text = text.normalize("NFC");
-    while ((m = re.exec(text)) !== null) {
-      if (m[0] === "") { re.lastIndex++; continue; }
-      var bytes = enc.encode(m[0]), syms = [];
-      for (var i = 0; i < bytes.length; i++) syms.push(byteSym[bytes[i]]);
-      bpe(syms).forEach(function (s) { ids.push(vocab.get(s)); });
-    }
-    return ids;
-  }
-  function tokenString(id) {
-    var sym = idToSym[id]; if (sym === undefined) return "?";
-    var bytes = new Uint8Array(sym.length);
-    for (var i = 0; i < sym.length; i++) bytes[i] = symByte[sym[i]];
-    return dec.decode(bytes);
-  }
-  function pieces(text) {
-    return encode(text).map(function (id) { var s = tokenString(id); return { id: id, s: s, bad: s.indexOf("\uFFFD") >= 0 }; });
-  }
+  var T = Q.tokeny, N = T.length, L = Q.vrstvy, H = Q.hlavy;
   function show(s) { return s === "\n" ? "↵" : s.replace(/ /g, "▁"); }
   function esc(s) { return s.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
 
-  /* kontrola: tokeny na bundě musí sedět s tím, co model četl */
-  var jacketText = Q.verse.join("\n");
-  var mine = encode(jacketText), theirs = Q.tokeny.map(function (t) { return t.id; });
-  if (mine.join() !== theirs.join()) { err.hidden = false; err.textContent = "Tokenizer v prohlížeči se rozchází s modelem. Čísla na bundě jsou z modelu."; }
+  document.getElementById("poem").innerHTML = Q.verse.map(esc).join("<br>");
 
-  /* ---------- kde v básni token bydlí ---------- */
-  var lines = POEM.split("\n"), where = {}, verseNo = 0;
-  lines.forEach(function (line) {
-    if (!line) return;
-    verseNo += 1; var n = verseNo;
-    encode(line).forEach(function (id) { (where[id] = where[id] || []).push({ n: n, line: line }); });
-  });
-
-  /* ---------- model: tokeny, attention, logit lens ---------- */
-  var T = Q.tokeny, N = T.length, L = Q.vrstvy, H = Q.hlavy;
   var attBytes = (function () { var s = atob(Q.attention), u = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; })();
   function att(l, h, i, j) { return attBytes[((l * H + h) * N + i) * N + j] / 255; }
-  function attRow(l, h, i) {
-    var row = new Float32Array(N);
-    if (h >= 0) { for (var j = 0; j <= i; j++) row[j] = att(l, h, i, j); }
-    else { for (var hh = 0; hh < H; hh++) for (var j = 0; j <= i; j++) row[j] += att(l, hh, i, j) / H; }
-    return row;
-  }
-  /* pozice tokenů modelu -> řádky (verše) */
+
   var rowsOf = [], cur = [];
   T.forEach(function (t, i) { if (t.s === "\n") { rowsOf.push(cur); cur = []; } else cur.push(i); });
   rowsOf.push(cur);
 
-  var sel = 0;   /* vybraný token (index v T) */
+  var sel = N - 1, head = 0;
+  var attL = document.getElementById("attL"), attLv = document.getElementById("attLv");
+  attL.max = L;
 
-  /* ---------- bunda ---------- */
-  var jacket = document.getElementById("jacket");
-  var jacketBtns = [];
-  rowsOf.forEach(function (idx) {
-    var row = document.createElement("div"); row.className = "row";
-    idx.forEach(function (i, k) {
-      var t = T[i], b = document.createElement("button");
-      b.type = "button"; b.className = "tok c" + (k % 4);
-      b.innerHTML = '<span class="s"></span><span class="n"></span>';
-      b.firstChild.textContent = show(t.s); b.lastChild.textContent = t.id;
-      b.addEventListener("click", function () { select(i); });
-      jacketBtns[i] = b; row.appendChild(b);
-    });
-    jacket.appendChild(row);
-  });
-
-  var detail = document.getElementById("detail");
-  function showDetail(p) {
-    var hex = p.bad ? "část vícebajtového znaku, sám o sobě nejde přečíst"
-                    : Array.prototype.map.call(enc.encode(p.s), function (x) { return x.toString(16).padStart(2, "0"); }).join(" ");
-    var occ = where[p.id] || [], poemHtml;
-    if (!occ.length) poemHtml = "<dd>Li Po tohle nikdy neřekl.</dd>";
-    else {
-      var seen = {};
-      poemHtml = '<dd>' + occ.length + '× v básni</dd>' + occ.filter(function (o) { if (seen[o.n]) return false; seen[o.n] = true; return true; })
-        .slice(0, 4).map(function (o) { return '<dd class="verse"><span>' + o.n + '</span>' + esc(o.line) + '</dd>'; }).join("");
-    }
-    detail.innerHTML = '<dt>token</dt><dd class="big">' + esc(show(p.s)) + '</dd>' +
-      '<dt>číslo</dt><dd class="hex">' + p.id + '</dd>' +
-      '<dt>bajty</dt><dd class="hex">' + esc(hex) + '</dd>' +
-      '<dt>u Li Po</dt>' + poemHtml;
-    detail.hidden = false;
-  }
-
-  /* ---------- attention ---------- */
-  var attL = document.getElementById("attL"), attLv = document.getElementById("attLv"), attH = document.getElementById("attH");
-  attL.max = L; attH.innerHTML = '<option value="-1">průměr všech</option>' + Array.from({ length: H }, function (_, h) { return '<option value="' + h + '">' + (h + 1) + '</option>'; }).join("");
-  var attRows = document.getElementById("attRows"), attBtns = [];
+  var attRows = document.getElementById("attRows"), btns = [];
   rowsOf.forEach(function (idx) {
     var row = document.createElement("div"); row.className = "row";
     idx.forEach(function (i) {
       var b = document.createElement("button"); b.type = "button"; b.className = "tok";
-      b.innerHTML = '<span class="s"></span>'; b.firstChild.textContent = show(T[i].s);
-      b.addEventListener("click", function () { select(i); });
-      attBtns[i] = b; row.appendChild(b);
+      b.textContent = show(T[i].s);
+      b.addEventListener("click", function () { sel = i; draw(); });
+      btns[i] = b; row.appendChild(b);
     });
     attRows.appendChild(row);
   });
-  var heat = document.getElementById("heat"), ctx = heat.getContext("2d");
+
+  var heads = document.getElementById("heads"), headEls = [], ctxs = [], labels = [];
+  for (var h = 0; h < H; h++) (function (h) {
+    var el = document.createElement("button"); el.type = "button"; el.className = "head";
+    var c = document.createElement("canvas"); c.width = N; c.height = N;
+    var l = document.createElement("div"); l.className = "l";
+    el.appendChild(c); el.appendChild(l);
+    el.addEventListener("click", function () { head = h; draw(); });
+    heads.appendChild(el); headEls.push(el); ctxs.push(c.getContext("2d")); labels.push(l);
+  })(h);
+
   var attCap = document.getElementById("attCap");
-  function drawAttention() {
-    var l = attL.value - 1, h = +attH.value;
-    attLv.textContent = l + 1;
-    var row = attRow(l, h, sel), max = 0;
-    for (var j = 0; j < N; j++) if (row[j] > max) max = row[j];
-    attBtns.forEach(function (b, j) {
+  function draw() {
+    var l = attL.value - 1; attLv.textContent = l + 1;
+    var row = [], max = 0;
+    for (var j = 0; j <= sel; j++) { row[j] = att(l, head, sel, j); if (row[j] > max) max = row[j]; }
+    btns.forEach(function (b, j) {
       b.style.setProperty("--a", (j <= sel && max > 0) ? (0.08 + 0.92 * row[j] / max).toFixed(3) : 0);
       b.classList.toggle("q", j === sel);
       b.classList.toggle("future", j > sel);
     });
-    var img = ctx.createImageData(N, N);
-    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) {
-      var v = j <= i ? (h >= 0 ? att(l, h, i, j) : attRow(l, h, i)[j]) : 0;
-      var k = (i * N + j) * 4, a = Math.min(1, v * 1.6);
-      img.data[k] = 22 + (242 - 22) * a; img.data[k + 1] = 21 + (239 - 21) * a; img.data[k + 2] = 19 + (233 - 19) * a; img.data[k + 3] = 255;
-      if (i === sel) { img.data[k] = 176 * (0.35 + 0.65 * a) + 22 * (1 - a) * 0.3; img.data[k + 1] = 85 * a + 30; img.data[k + 2] = 47 * a + 25; }
+    for (var h = 0; h < H; h++) {
+      var img = ctxs[h].createImageData(N, N), best = 0, bestJ = 0;
+      for (var i = 0; i < N; i++) for (j = 0; j < N; j++) {
+        var v = j <= i ? att(l, h, i, j) : 0, a = Math.min(1, v * 1.7), k = (i * N + j) * 4;
+        if (i === sel) { img.data[k] = 40 + 176 * a; img.data[k + 1] = 24 + 85 * a; img.data[k + 2] = 20 + 47 * a; }
+        else { img.data[k] = 22 + 220 * a; img.data[k + 1] = 21 + 218 * a; img.data[k + 2] = 19 + 214 * a; }
+        img.data[k + 3] = 255;
+        if (i === sel && v > best) { best = v; bestJ = j; }
+      }
+      ctxs[h].putImageData(img, 0, 0);
+      headEls[h].classList.toggle("on", h === head);
+      labels[h].innerHTML = '<span>' + (h + 1) + '</span><b></b>';
+      labels[h].lastChild.textContent = show(T[bestJ].s) + " " + Math.round(best * 100) + "%";
     }
-    ctx.putImageData(img, 0, 0);
     var top = [];
     for (j = 0; j <= sel; j++) top.push([row[j], j]);
     top.sort(function (a, b) { return b[0] - a[0]; });
-    attCap.innerHTML = 'Token <b>' + esc(show(T[sel].s)) + '</b> ve vrstvě ' + (l + 1) + (h >= 0 ? ', hlavě ' + (h + 1) : ', průměr hlav') + ' se dívá nejvíc na: ' +
+    attCap.innerHTML = 'Token <b>' + esc(show(T[sel].s)) + '</b>, vrstva ' + (l + 1) + ', hlava ' + (head + 1) + ': dívá se nejvíc na ' +
       top.slice(0, 4).map(function (p) { return '<b>' + esc(show(T[p[1]].s)) + '</b> <i>' + Math.round(p[0] * 100) + '%</i>'; }).join(', ') + '.';
   }
-  attL.addEventListener("input", drawAttention);
-  attH.addEventListener("change", drawAttention);
+  attL.addEventListener("input", draw);
 
-  /* ---------- logit lens ---------- */
-  var lensL = document.getElementById("lensL"), lensLv = document.getElementById("lensLv");
-  lensL.max = L; lensL.value = L;
-  var lensRows = document.getElementById("lensRows"), lensCells = [], lensGuess = [];
-  rowsOf.forEach(function (idx, r) {
-    var row = document.createElement("div"); row.className = "row";
-    idx.forEach(function (i) {
-      var c = document.createElement("div"); c.className = "cell";
-      c.innerHTML = '<span class="s"></span><span class="g"></span>';
-      c.firstChild.textContent = show(T[i].s);
-      c.addEventListener("click", function () { select(i); });
-      lensCells[i] = c; lensGuess[i] = c.lastChild; row.appendChild(c);
-    });
-    lensRows.appendChild(row);
-  });
-  var top3 = document.getElementById("top3");
-  function drawLens() {
-    var l = lensL.value - 1; lensLv.textContent = l + 1;
-    var hits = 0;
-    T.forEach(function (t, i) {
-      var g = Q.logit_lens[l][i][0], next = i + 1 < N ? T[i + 1].s : null;
-      if (lensGuess[i]) {
-        lensGuess[i].textContent = show(g.s);
-        var hit = next !== null && g.s === next;
-        lensGuess[i].classList.toggle("hit", hit);
-        lensCells[i].classList.toggle("on", i === sel);
-      }
-      if (next !== null && g.s === next) hits++;
-    });
-    var next = sel + 1 < N ? T[sel + 1].s : null;
-    top3.innerHTML = '<span class="p">po <b>' + esc(show(T[sel].s)) + '</b> tipuje</span><span></span><span class="p">' + hits + ' z ' + (N - 1) + ' tipů sedí</span>' +
-      Q.logit_lens[l][sel].map(function (g) {
-        return '<span class="p">' + Math.round(g.p * 100) + '%</span><span class="bar" style="width:' + Math.max(2, g.p * 160) + 'px"></span><span class="w"' + (g.s === next ? ' style="color:var(--hit)"' : '') + '>' + esc(show(g.s)) + '</span>';
-      }).join("");
-  }
-  lensL.addEventListener("input", drawLens);
-
-  /* ---------- pátý verš ---------- */
   document.getElementById("greedy").textContent = Q.pokracovani.greedy;
   document.getElementById("sampled").textContent = Q.pokracovani.vzorek;
   var same = Q.verse.indexOf(Q.pokracovani.greedy.trim());
@@ -481,51 +266,6 @@ window.MERGES = __MERGES__;
     ? 'Nejjistější pokračování je verš ' + (same + 1) + ' ještě jednou. Model se opakuje jako kumpán po třetí sklenici.'
     : 'Model Li Po nezná, hádá z toho, co má před sebou.';
 
-  /* ---------- výběr tokenu ---------- */
-  function select(i) {
-    sel = i;
-    jacketBtns.forEach(function (b, j) { b.classList.toggle("on", j === i); });
-    showDetail({ id: T[i].id, s: T[i].s, bad: T[i].s.indexOf("\uFFFD") >= 0 });
-    drawAttention(); drawLens();
-  }
-
-  /* ---------- napiš něco ---------- */
-  var input = document.getElementById("input"), yours = document.getElementById("yours"), stats = document.getElementById("stats");
-  var yourDetail = null;
-  function update() {
-    var text = input.value, ps = pieces(text);
-    yours.innerHTML = "";
-    var shared = ps.filter(function (p) { return where[p.id]; }).length;
-    ps.forEach(function (p, i) {
-      var b = document.createElement("button"); b.type = "button";
-      b.className = "tok c" + (i % 4) + (p.s === "\n" ? " nl" : "") + (p.bad ? " bad" : "");
-      b.innerHTML = '<span class="s"></span><span class="n"></span>';
-      b.firstChild.textContent = show(p.s); b.lastChild.textContent = p.id;
-      b.addEventListener("click", function () { showDetail(p); detail.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
-      yours.appendChild(b);
-    });
-    stats.innerHTML = '<span><b>' + ps.length + '</b>tokenů</span><span><b>' + Array.from(text).length + '</b>znaků</span>' +
-      '<span><b>' + enc.encode(text).length + '</b>bajtů</span><span><b>' + shared + '</b>už řekl Li Po</span>';
-  }
-  input.addEventListener("input", update);
-
-  /* ---------- celá báseň ---------- */
-  var poem = document.getElementById("poem");
-  lines.forEach(function (line) {
-    if (!line) { var g = document.createElement("div"); g.className = "stanza-gap"; poem.appendChild(g); return; }
-    var row = document.createElement("div"); row.className = "row";
-    pieces(line).forEach(function (p, i) {
-      var b = document.createElement("button"); b.type = "button"; b.className = "tok c" + (i % 4) + (p.bad ? " bad" : "");
-      b.innerHTML = '<span class="s"></span><span class="n"></span>';
-      b.firstChild.textContent = show(p.s); b.lastChild.textContent = p.id;
-      b.addEventListener("click", function () { showDetail(p); detail.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
-      row.appendChild(b);
-    });
-    poem.appendChild(row);
-  });
-
-  /* start: poslední token na bundě, ten už má za sebou celou báseň */
-  select(N - 1);
-  update();
+  draw();
 })();
 </script>

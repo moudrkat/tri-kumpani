@@ -1,5 +1,5 @@
 [project]
-name = "li-po-jacket"
+name = "tri-kumpani"
 version = "0.1.0"
 description = "Nápis na bundu podle Li Po a po cestě tokenizery, bajty a word2vec"
 requires-python = ">=3.12"
